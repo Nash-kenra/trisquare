@@ -2,7 +2,7 @@
 
 TriSquare is a finance application designed to provide users with comprehensive insights into stock data obtained from an API. The application's core functionality includes displaying stock details, visualizing sector-wise market capitalization, and analyzing fund movement between sectors.
 
-## Installation:
+## Installation for Windows:
 
 1. Install Postgres set username: postgres, Password: Kenra123
 2. Create Database named **pulse**
