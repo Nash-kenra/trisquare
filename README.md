@@ -15,3 +15,6 @@ TriSquare is a finance application designed to provide users with comprehensive 
 9. The above command installs all the requirements and denpendencies to run the project
 10. run trisquare/src/main.py
 11. You will get the data in your database.
+
+
+## Installation for Mac:
