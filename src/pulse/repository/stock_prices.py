@@ -1,18 +1,74 @@
 from sqlalchemy import Column, String, DateTime, Float, Integer, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 from pulse.repository.database_connect import DatabaseConnect
+from pulse.repository.pulsedb_base import PulseDB_Base
 from datetime import datetime
 
 Base = declarative_base()
 
-class Stock_prices_table(Base):
+class Global_stocks_table(Base, PulseDB_Base):
+# Entity class for the DB table Global companies. 
+# Manage all the operations like loading and fetching the data from the global stocks table.
+
+    __tablename__ = 'globalstocks'
+    symbol = Column(String, primary_key=True)
+    company_name = Column(String)
+    price = Column(Float)
+    exchange = Column(String)
+    exchange_short_name = Column(String)
+    company_type = Column(String)
+
+
+    def getBase(self):
+        return Base
+
+    def convert(self, element):
+        row = Global_stocks_table(
+            symbol=element["symbol"],
+            company_name=element["name"],
+            price=element["price"],
+            exchange=element["exchange"],
+            exchange_short_name=element["exchangeShortName"],
+            company_type=element["type"]
+        )
+        return row
+    
+
+class Global_etfs_table(Base, PulseDB_Base):
+# Entity class for the DB table Global etf companies. 
+# Manage all the operations like loading and fetching the data from the global etf table.
+
+    __tablename__ = 'globaletfs'
+    symbol = Column(String, primary_key=True)
+    company_name = Column(String)
+    price = Column(Float)
+    exchange = Column(String)
+    exchange_short_name = Column(String)
+    company_type = Column(String)
+
+
+    def getBase(self):
+        return Base
+
+    def convert(self, element):
+        row = Global_etfs_table(
+            symbol=element["symbol"],
+            company_name=element["name"],
+            price=element["price"],
+            exchange=element["exchange"],
+            exchange_short_name=element["exchangeShortName"],
+            company_type=element["type"]
+        )
+        return row
+
+class Stock_prices_table(Base, PulseDB_Base):
     __tablename__ = 'stockprices'
     symbol = Column(String, primary_key=True)
-    timestamp = Column(DateTime, primary_key=True)  # Change the data type to DateTime
-    name = Column(String)
+    date_time = Column(DateTime, primary_key=True)  # Change the data type to DateTime
+    company_name = Column(String)
     price = Column(Float)
     changes_percentage = Column(Float)
-    change = Column(Float)
+    day_change = Column(Float)
     day_low = Column(Float)
     day_high = Column(Float)
     year_high = Column(Float)
@@ -30,38 +86,102 @@ class Stock_prices_table(Base):
     earnings_announcement = Column(DateTime)
     shares_outstanding = Column(BigInteger)
 
+    def getBase(self):
+        return Base
+
+    def convert(self, element):
+        row = Stock_prices_table(
+                symbol=element["symbol"],
+                date_time = datetime.fromtimestamp(element["timestamp"]),
+                company_name=element["name"],
+                price=element["price"],
+                changes_percentage=element["changesPercentage"],
+                day_change=element["change"],
+                day_low=element["dayLow"],
+                day_high=element["dayHigh"],
+                year_high=element["yearHigh"],
+                year_low=element["yearLow"],
+                market_cap=element["marketCap"],
+                price_avg_50=element["priceAvg50"],
+                price_avg_200=element["priceAvg200"],
+                exchange=element["exchange"],
+                volume=element["volume"],
+                avg_volume=element["avgVolume"],
+                open_price=element["open"],
+                previous_close=element["previousClose"],
+                eps=element["eps"],
+                pe=element["pe"],
+                earnings_announcement=element["earningsAnnouncement"],
+                shares_outstanding=element["sharesOutstanding"]
+            )
+        return row
+
+
+class Historic_prices_table(Base):
+    __tablename__ = 'historic_prices'
+    symbol = Column(String, primary_key=True)
+    date_time = Column(DateTime, primary_key=True)
+    open_price = Column(Float)
+    day_high = Column(Float)
+    day_low = Column(Float)
+    close_price = Column(Float)
+    adj_close = Column(Float)
+    volume = Column(Integer)
+    unadjusted_volume = Column(Integer)
+    day_change = Column(Float)
+    change_percent = Column(Float)
+    vwap = Column(Float)
+    label_name = Column(String)
+    change_over_time = Column(Float)
+
+    def getBase(self):
+        return Base
+
+    def convert(self, element):
+        # Extract the symbol from the arguments
+        row = Historic_prices_table(
+            symbol=None,
+            date_time=element["date"],
+            open_price=element["open"],
+            day_high=element["high"],
+            day_low=element["low"],
+            close_price=element["close"],
+            adj_close=element["adjClose"],
+            volume=element["volume"],
+            unadjusted_volume=element["unadjustedVolume"],
+            day_change=element["change"],
+            change_percent=element["changePercent"],
+            vwap=element["vwap"],
+            label_name=element["label"],
+            change_over_time=element["changeOverTime"]
+        )
+        return row
+
+    def convert(self, row, api_data):
+        row.symbol = api_data["symbol"]
+
     def load_data(self, json_data):
         db_connector = DatabaseConnect()
         session = db_connector.connect_db()
         with session() as session:
-            for element in json_data:
-                timestamp = datetime.fromtimestamp(element["timestamp"])
-                existing_entry = session.query(Stock_prices_table).filter_by(symbol=element["symbol"], timestamp=timestamp).first()
-                if not existing_entry :
-                    stock_entry = Stock_prices_table(
-                        symbol=element["symbol"],
-                        timestamp = timestamp,
-                        name=element["name"],
-                        price=element["price"],
-                        changes_percentage=element["changesPercentage"],
-                        change=element["change"],
-                        day_low=element["dayLow"],
-                        day_high=element["dayHigh"],
-                        year_high=element["yearHigh"],
-                        year_low=element["yearLow"],
-                        market_cap=element["marketCap"],
-                        price_avg_50=element["priceAvg50"],
-                        price_avg_200=element["priceAvg200"],
-                        exchange=element["exchange"],
-                        volume=element["volume"],
-                        avg_volume=element["avgVolume"],
-                        open_price=element["open"],
-                        previous_close=element["previousClose"],
-                        eps=element["eps"],
-                        pe=element["pe"],
-                        earnings_announcement=element["earningsAnnouncement"],
-                        shares_outstanding=element["sharesOutstanding"]
-                    )
-                    session.add(stock_entry)
+            #symbol = json_data["symbol"]
+            for element in json_data["historical"]:
+                row = Historic_prices_table(
+                    symbol = json_data["symbol"],
+                    date_time = element["date"],
+                    open_price = element["open"],
+                    day_high = element["high"],
+                    day_low = element["low"],
+                    close_price = element["close"],
+                    adj_close = element["adjClose"],
+                    volume = element["volume"],
+                    unadjusted_volume = element["unadjustedVolume"],
+                    day_change = element["change"],
+                    change_percent = element["changePercent"],
+                    vwap = element["vwap"],
+                    label_name = element["label"],
+                    change_over_time = element["changeOverTime"]
+                )
+                session.add(row)
 
-                session.commit()
+            session.commit()

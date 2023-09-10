@@ -7,7 +7,7 @@ class Config:
 # ToDo:
 # The class needs to be designed and implemented as a singleton as it's very critical to load the
 # setting only once. 
-#      
+
     def __init__(self) -> None:
         self.settings = None
         
