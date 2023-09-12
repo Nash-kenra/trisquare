@@ -9,9 +9,9 @@ class Global_stocks(GetApi):
         super().__init__("stock/list?")
 
 class Historical_prices(GetApi):
-    def __init__(self, symbol)->None :
+    def __init__(self, symbol,date)->None :
 
-        query = "historical-price-full/" + symbol + "?from=2017-01-01&to=2023-09-07&"
+        query = "historical-price-full/" + symbol + "?from=2017-01-01&to=" + date + "&"
         super().__init__(query)
     
 class Historical_market_cap(GetApi):

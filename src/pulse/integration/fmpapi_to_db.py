@@ -17,6 +17,7 @@ from pulse.repository.index_companies import DOWJONES_table
 from pulse.repository.stock_prices import Global_stocks_table
 from pulse.repository.stock_prices import Historical_prices_table
 from pulse.repository.stock_prices import Daily_prices_table
+import datetime
 
 
 # from pulse.combine.combine import Combine
@@ -80,46 +81,51 @@ class FmpApiToDatabase():
     #     # Get historic stock prices
         # Fetch SP500 table and get teh list of symbols
 
-        symbol = "MSFT"
-        historical_price_api = Historical_prices(symbol)
-        historical_price_json_data = historical_price_api.fetch()
-
-    #     # Get historic Makert cap 
-        historical_marketcap_api = Historical_market_cap(symbol)
-        historical_marketcap_json_data = historical_marketcap_api.fetch()
-
-        symbol = historical_price_json_data['symbol']
-
-    # Create a dictionary with date as keys for market cap data
-        market_cap_dict = {element["date"]: element["marketCap"] for element in historical_marketcap_json_data}
-
+        symbols = SP500_table()
+        current_date = datetime.date.today()
+        date_str = current_date.strftime('%Y-%m-%d')
         historical_price_with_marketcap = []
-        for element in historical_price_json_data["historical"]:
-            date = element["date"]
-            market_cap = market_cap_dict.get(date)  # Lookup market cap by date
-            element["symbol"] = symbol
-            element["marketCap"] = market_cap
-            historical_price_with_marketcap.append(element)
-            print(f"Element: {element}")    
+        for symbol in symbols.get_symbols():
+            historical_price_api = Historical_prices(symbol,date_str)
+            historical_price_json_data = historical_price_api.fetch()
 
-        print(f"Fetched Historical stock price json data from API for symbol: {symbol}")
+        #     # Get historic Makert cap 
+            historical_marketcap_api = Historical_market_cap(symbol)
+            historical_marketcap_json_data = historical_marketcap_api.fetch()
 
-        historical_prices_repo = Historical_prices_table()
-        historical_prices_repo.load_data(historical_price_with_marketcap)
+            symbol = historical_price_json_data['symbol']
 
-        print(f"loaded Historical stock prices API data into Historical price table for symbol: {symbol}")
+        # Create a dictionary with date as keys for market cap data
+            market_cap_dict = {element["date"]: element["marketCap"] for element in historical_marketcap_json_data}
+
+            
+            for element in historical_price_json_data["historical"]:
+                date = element["date"]
+                market_cap = market_cap_dict.get(date)  # Lookup market cap by date
+                element["symbol"] = symbol
+                element["marketCap"] = market_cap
+                historical_price_with_marketcap.append(element)
+                #print(f"Element: {element}")    
+
+            print(f"Fetched Historical stock price json data from API for symbol: {symbol}")
+
+            historical_prices_repo = Historical_prices_table()
+            historical_prices_repo.load_data(historical_price_with_marketcap)
+
+            print(f"loaded Historical stock prices API data into Historical price table for symbol: {symbol}")
 
 
     def load_daily_prices():
         
         # Fetch SP500 table and get teh list of symbols
-        symbol = "MSFT"
-        daily_prices_api = Daily_prices(symbol)
-        daily_prices_json_data = daily_prices_api.fetch()
+        symbols = SP500_table()
+        for symbol in symbols.get_symbols():
+            daily_prices_api = Daily_prices(symbol)
+            daily_prices_json_data = daily_prices_api.fetch()
 
-        print(f"Fetched stock prices json data from API for symbol: {symbol}")
+            print(f"Fetched stock prices json data from API for symbol: {symbol}")
 
-        daily_prices_repo = Daily_prices_table()
-        daily_prices_repo.load_data(daily_prices_json_data)
+            daily_prices_repo = Daily_prices_table()
+            daily_prices_repo.load_data(daily_prices_json_data)
 
-        print(f"loaded stock prices API data into stock price table for symbol: {symbol}")
+            print(f"loaded stock prices API data into stock price table for symbol: {symbol}")
