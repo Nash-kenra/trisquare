@@ -61,8 +61,8 @@ class Global_etfs_table(Base, PulseDB_Base):
         )
         return row
 
-class Stock_prices_table(Base, PulseDB_Base):
-    __tablename__ = 'stockprices'
+class Daily_prices_table(Base, PulseDB_Base):
+    __tablename__ = 'daily_prices'
     symbol = Column(String, primary_key=True)
     date_time = Column(DateTime, primary_key=True)  # Change the data type to DateTime
     company_name = Column(String)
@@ -90,7 +90,7 @@ class Stock_prices_table(Base, PulseDB_Base):
         return Base
 
     def convert(self, element):
-        row = Stock_prices_table(
+        row = Daily_prices_table(
                 symbol=element["symbol"],
                 date_time = datetime.fromtimestamp(element["timestamp"]),
                 company_name=element["name"],

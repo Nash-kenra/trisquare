@@ -5,9 +5,9 @@ from pulse.fmpapi.stock_prices import Global_stocks
 
 from pulse.fmpapi.stock_prices import Historical_prices
 from pulse.fmpapi.stock_prices import Historical_market_cap
-from pulse.fmpapi.stock_prices import Stock_prices
+from pulse.fmpapi.stock_prices import Daily_prices
 
-# from pulse.fmpapi.get_api import Stockprices
+# from pulse.fmpapi.get_api import daily_prices
 
 
 # from pulse.fmpapi.get_api import Global_etfs
@@ -16,9 +16,8 @@ from pulse.repository.index_companies import NASDAQ_table
 from pulse.repository.index_companies import DOWJONES_table
 from pulse.repository.stock_prices import Global_stocks_table
 from pulse.repository.stock_prices import Historical_prices_table
-from pulse.repository.stock_prices import Stock_prices_table
+from pulse.repository.stock_prices import Daily_prices_table
 
-# from pulse.repository.stock_prices import Stock_prices_table
 
 # from pulse.combine.combine import Combine
 
@@ -76,7 +75,7 @@ class FmpApiToDatabase():
 
     
 
-    def load_stock_historical_prices():
+    def load_historical_prices():
         
     #     # Get historic stock prices
         # Fetch SP500 table and get teh list of symbols
@@ -111,16 +110,16 @@ class FmpApiToDatabase():
         print(f"loaded Historical stock prices API data into Historical price table for symbol: {symbol}")
 
 
-    def load_stock_prices():
+    def load_daily_prices():
         
         # Fetch SP500 table and get teh list of symbols
         symbol = "MSFT"
-        stock_prices_api = Stock_prices(symbol)
-        stock_prices_json_data = stock_prices_api.fetch()
+        daily_prices_api = Daily_prices(symbol)
+        daily_prices_json_data = daily_prices_api.fetch()
 
         print(f"Fetched stock prices json data from API for symbol: {symbol}")
 
-        stock_prices_repo = Stock_prices_table()
-        stock_prices_repo.load_data(stock_prices_json_data)
+        daily_prices_repo = Daily_prices_table()
+        daily_prices_repo.load_data(daily_prices_json_data)
 
         print(f"loaded stock prices API data into stock price table for symbol: {symbol}")

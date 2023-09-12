@@ -2,7 +2,7 @@
 DROP MATERIALIZED view if EXISTS public.sectors_subsectors_mv;
 DROP TABLE if EXISTS public.dowjones;
 DROP TABLE if EXISTS public.nasdaq;
-DROP TABLE if EXISTS public.stockprices;
+DROP TABLE if EXISTS public.daily_prices;
 DROP TABLE if EXISTS public.historic_prices;
 DROP TABLE if EXISTS public.sp500;
 DROP TABLE if EXISTS public.globalstocks;
@@ -67,9 +67,9 @@ CREATE TABLE public.sp500 (
 	CONSTRAINT sp500_pkey PRIMARY KEY (symbol)
 );
 
--- public.stockprices definition
+-- public.daily_prices definition
 
-CREATE TABLE public.stockprices (
+CREATE TABLE public.daily_prices (
 	symbol varchar NOT NULL,
 	date_time timestamp NOT NULL,
 	company_name varchar NULL,
@@ -92,7 +92,7 @@ CREATE TABLE public.stockprices (
 	pe float8 NULL,
 	earnings_announcement timestamp NULL,
 	shares_outstanding int8 NULL,
-	CONSTRAINT stockprices_pkey PRIMARY KEY (symbol, date_time)
+	CONSTRAINT daily_prices_pkey PRIMARY KEY (symbol, date_time)
 );
 
 -- public.globalstocks definition
