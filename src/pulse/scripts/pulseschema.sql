@@ -95,18 +95,6 @@ CREATE TABLE public.stockprices (
 	CONSTRAINT stockprices_pkey PRIMARY KEY (symbol, date_time)
 );
 
--- public.globaletfs definition
-
-CREATE TABLE public.globaletfs (
-	symbol varchar NOT NULL,
-	company_name varchar NULL,
-	price float8 NULL,
-	exchange varchar NULL,
-	exchange_short_name varchar NULL,
-	company_type varchar NULL,
-	CONSTRAINT globaletf_pkey PRIMARY KEY (symbol)
-);
-
 -- public.globalstocks definition
 
 CREATE TABLE public.globalstocks (
@@ -118,6 +106,29 @@ CREATE TABLE public.globalstocks (
 	company_type varchar NULL,
 	CONSTRAINT globalstocks_pkey PRIMARY KEY (symbol)
 );
+
+ 
+-- public.historical_prices definition
+
+CREATE TABLE public.historical_prices (
+	symbol varchar NOT NULL,
+	date_time timestamp NOT NULL,
+	open_price float8 NULL,
+	day_high float8 NULL,
+	day_low float8 NULL,
+	close_price float8 NULL,
+	adj_close float8 NULL,
+	volume int4 NULL,
+	unadjusted_volume int4 NULL,
+	day_change float8 NULL,
+	change_percent float8 NULL,
+	vwap float8 NULL,
+	label_name varchar NULL,
+	change_over_time float8 NULL,
+	market_cap float8 NULL,
+	CONSTRAINT historical_prices_pkey PRIMARY KEY (symbol, date_time)
+);
+
 
 
 -- public.sectors_subsectors_mv source
