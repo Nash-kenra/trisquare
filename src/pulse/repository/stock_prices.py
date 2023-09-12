@@ -117,8 +117,8 @@ class Stock_prices_table(Base, PulseDB_Base):
         return row
 
 
-class Historic_prices_table(Base, PulseDB_Base):
-    __tablename__ = 'historic_prices'
+class Historical_prices_table(Base, PulseDB_Base):
+    __tablename__ = 'historical_prices'
     symbol = Column(String, primary_key=True)
     date_time = Column(DateTime, primary_key=True)
     open_price = Column(Float)
@@ -139,7 +139,7 @@ class Historic_prices_table(Base, PulseDB_Base):
         return Base
 
     def convert(self, element):
-        row = Historic_prices_table(
+        row = Historical_prices_table(
                 symbol=element["symbol"],
                 date_time=element["date"],
                 open_price=element["open"],

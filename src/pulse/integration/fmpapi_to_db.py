@@ -1,18 +1,24 @@
-from pulse.fmpapi.get_api import SP500
-from pulse.fmpapi.get_api import Nasdaq
-from pulse.fmpapi.get_api import Dowjones
-from pulse.fmpapi.get_api import Stockprices
-from pulse.fmpapi.get_api import Historicprices
-from pulse.fmpapi.get_api import Global_stocks
-from pulse.fmpapi.get_api import Global_etfs
+from pulse.fmpapi.index_companies import SP500
+from pulse.fmpapi.index_companies import Nasdaq
+from pulse.fmpapi.index_companies import Dowjones
+from pulse.fmpapi.stock_prices import Global_stocks
+
+from pulse.fmpapi.stock_prices import Historical_prices
+from pulse.fmpapi.stock_prices import Historical_market_cap
+
+# from pulse.fmpapi.get_api import Stockprices
+
+
+# from pulse.fmpapi.get_api import Global_etfs
 from pulse.repository.index_companies import SP500_table
 from pulse.repository.index_companies import NASDAQ_table
 from pulse.repository.index_companies import DOWJONES_table
 from pulse.repository.stock_prices import Global_stocks_table
-from pulse.repository.stock_prices import Global_etfs_table
-from pulse.repository.stock_prices import Stock_prices_table
-from pulse.repository.stock_prices import Historic_prices_table
-from pulse.combine.combine import Combine
+from pulse.repository.stock_prices import Historical_prices_table
+
+# from pulse.repository.stock_prices import Stock_prices_table
+
+# from pulse.combine.combine import Combine
 
 class FmpApiToDatabase():
 # Integration layer to extract the FMPAPI data and load into . 
@@ -61,21 +67,43 @@ class FmpApiToDatabase():
         global_stocks_repo.load_data(global_stocks_json_data)
         print("loaded Global stock API data into globalstocks table")
 
-    def load_global_etfs():
-
-        global_etfs_api = Global_etfs()
-        global_etfs_json_data = global_etfs_api.fetch()
-        print("Fetched global etf json data from API")
-
-        global_etfs_repo = Global_etfs_table()
-        #global_etfs_repo.create_table(global_etfs_repo.getBase())
-        global_etfs_repo.load_data(global_etfs_json_data)
-        print("loaded Global etf API data into global etf table")
-
- 
     def load_index_companies():
         FmpApiToDatabase.load_SP500_companies()
         FmpApiToDatabase.load_Nasdaq_companies()
         FmpApiToDatabase.load_Dowjones_companies()
 
     
+
+    def load_stock_historical_prices():
+        
+    #     # Get historic stock prices
+        # Fetch SP500 table and get teh list of symbols
+
+        symbol = "MSFT"
+        historical_price_api = Historical_prices(symbol)
+        historical_price_json_data = historical_price_api.fetch()
+
+    #     # Get historic Makert cap 
+        historical_marketcap_api = Historical_market_cap(symbol)
+        historical_marketcap_json_data = historical_marketcap_api.fetch()
+
+        symbol = historical_price_json_data['symbol']
+
+    # Create a dictionary with date as keys for market cap data
+        market_cap_dict = {element["date"]: element["marketCap"] for element in historical_marketcap_json_data}
+
+        historical_price_with_marketcap = []
+        for element in historical_price_json_data["historical"]:
+            date = element["date"]
+            market_cap = market_cap_dict.get(date)  # Lookup market cap by date
+            element["symbol"] = symbol
+            element["marketCap"] = market_cap
+            historical_price_with_marketcap.append(element)
+            print(f"Element: {element}")    
+
+        print(f"Fetched Historical stock price json data from API for symbol: {symbol}")
+
+        historical_prices_repo = Historical_prices_table()
+        historical_prices_repo.load_data(historical_price_with_marketcap)
+
+        print(f"loaded Historical stock prices API data into Historical price table for symbol: {symbol}")
