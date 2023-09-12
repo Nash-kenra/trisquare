@@ -1,4 +1,6 @@
-from pulse.controller import Controller
+from pulse.integration.fmpapi_to_db import FmpApiToDatabase
 
-Controller.load_index_companies()
+FmpApiToDatabase.load_index_companies()
+
+FmpApiToDatabase.load_global_stocks()
 

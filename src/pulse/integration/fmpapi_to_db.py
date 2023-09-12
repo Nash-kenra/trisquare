@@ -15,7 +15,7 @@ from pulse.repository.stock_prices import Historic_prices_table
 from pulse.combine.combine import Combine
 
 class FmpApiToDatabase():
-# Controller calls the FMPAPI and gets the JSON data. 
+# Integration layer to extract the FMPAPI data and load into . 
 # This data is passed to the tables for loading. 
 # Mainly focus on loading all the index companies from SP500, NASDAQ and DOWJONES
 
