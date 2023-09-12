@@ -18,3 +18,8 @@ class Historical_market_cap(GetApi):
     def __init__(self, symbol)->None:
         query = "historical-market-capitalization/" + symbol + "?limit=2000&"
         super().__init__(query)
+
+class Stock_prices(GetApi):
+    def __init__(self, symbol)->None :
+        query = "quote/" + symbol +"?"
+        super().__init__(query)

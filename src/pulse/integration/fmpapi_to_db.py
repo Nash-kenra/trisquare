@@ -5,6 +5,7 @@ from pulse.fmpapi.stock_prices import Global_stocks
 
 from pulse.fmpapi.stock_prices import Historical_prices
 from pulse.fmpapi.stock_prices import Historical_market_cap
+from pulse.fmpapi.stock_prices import Stock_prices
 
 # from pulse.fmpapi.get_api import Stockprices
 
@@ -15,6 +16,7 @@ from pulse.repository.index_companies import NASDAQ_table
 from pulse.repository.index_companies import DOWJONES_table
 from pulse.repository.stock_prices import Global_stocks_table
 from pulse.repository.stock_prices import Historical_prices_table
+from pulse.repository.stock_prices import Stock_prices_table
 
 # from pulse.repository.stock_prices import Stock_prices_table
 
@@ -107,3 +109,18 @@ class FmpApiToDatabase():
         historical_prices_repo.load_data(historical_price_with_marketcap)
 
         print(f"loaded Historical stock prices API data into Historical price table for symbol: {symbol}")
+
+
+    def load_stock_prices():
+        
+        # Fetch SP500 table and get teh list of symbols
+        symbol = "MSFT"
+        stock_prices_api = Stock_prices(symbol)
+        stock_prices_json_data = stock_prices_api.fetch()
+
+        print(f"Fetched stock prices json data from API for symbol: {symbol}")
+
+        stock_prices_repo = Stock_prices_table()
+        stock_prices_repo.load_data(stock_prices_json_data)
+
+        print(f"loaded stock prices API data into stock price table for symbol: {symbol}")
