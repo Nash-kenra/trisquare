@@ -7,10 +7,6 @@ from pulse.fmpapi.stock_prices_api import Historical_prices
 from pulse.fmpapi.stock_prices_api import Historical_market_cap
 from pulse.fmpapi.stock_prices_api import Daily_prices
 
-# from pulse.fmpapi.get_api import daily_prices
-
-
-# from pulse.fmpapi.get_api import Global_etfs
 from pulse.repository.index_companies import SP500_table
 from pulse.repository.index_companies import NASDAQ_table
 from pulse.repository.index_companies import DOWJONES_table
@@ -19,9 +15,6 @@ from pulse.repository.stock_prices_repo import Historical_prices_table
 from pulse.repository.stock_prices_repo import Daily_prices_table
 from concurrent.futures import ThreadPoolExecutor
 
-
-
-# from pulse.combine.combine import Combine
 
 class FmpApiToDatabase():
 # Integration layer to extract the FMPAPI data and load into . 
