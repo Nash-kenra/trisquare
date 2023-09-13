@@ -1,26 +1,20 @@
 from pulse.fmpapi.index_companies import SP500
 from pulse.fmpapi.index_companies import Nasdaq
 from pulse.fmpapi.index_companies import Dowjones
-from pulse.fmpapi.stock_prices import Global_stocks
+from pulse.fmpapi.stock_prices_api import Global_stocks
 
-from pulse.fmpapi.stock_prices import Historical_prices
-from pulse.fmpapi.stock_prices import Historical_market_cap
-from pulse.fmpapi.stock_prices import Daily_prices
+from pulse.fmpapi.stock_prices_api import Historical_prices
+from pulse.fmpapi.stock_prices_api import Historical_market_cap
+from pulse.fmpapi.stock_prices_api import Daily_prices
 
-# from pulse.fmpapi.get_api import daily_prices
-
-
-# from pulse.fmpapi.get_api import Global_etfs
 from pulse.repository.index_companies import SP500_table
 from pulse.repository.index_companies import NASDAQ_table
 from pulse.repository.index_companies import DOWJONES_table
-from pulse.repository.stock_prices import Global_stocks_table
-from pulse.repository.stock_prices import Historical_prices_table
-from pulse.repository.stock_prices import Daily_prices_table
-import datetime
+from pulse.repository.stock_prices_repo import Global_stocks_table
+from pulse.repository.stock_prices_repo import Historical_prices_table
+from pulse.repository.stock_prices_repo import Daily_prices_table
+from concurrent.futures import ThreadPoolExecutor
 
-
-# from pulse.combine.combine import Combine
 
 class FmpApiToDatabase():
 # Integration layer to extract the FMPAPI data and load into . 
@@ -78,17 +72,15 @@ class FmpApiToDatabase():
 
     def load_historical_prices():
         
-    #     # Get historic stock prices
+        # Get historic stock prices
         # Fetch SP500 table and get teh list of symbols
-
-        symbols = SP500_table()
-        historical_price_with_marketcap = []
-        for symbol in symbols.get_symbols():
-            historical_price_api = Historical_prices(symbol)
+        symbols = SP500_table().get_symbols()
+        def fetch_and_process_data(company_symbol):
+            historical_price_api = Historical_prices(company_symbol)
             historical_price_json_data = historical_price_api.fetch()
 
         #     # Get historic Makert cap 
-            historical_marketcap_api = Historical_market_cap(symbol)
+            historical_marketcap_api = Historical_market_cap(company_symbol)
             historical_marketcap_json_data = historical_marketcap_api.fetch()
 
             symbol = historical_price_json_data['symbol']
@@ -96,14 +88,13 @@ class FmpApiToDatabase():
         # Create a dictionary with date as keys for market cap data
             market_cap_dict = {element["date"]: element["marketCap"] for element in historical_marketcap_json_data}
 
-            
+            historical_price_with_marketcap = []
             for element in historical_price_json_data["historical"]:
                 date = element["date"]
                 market_cap = market_cap_dict.get(date)  # Lookup market cap by date
                 element["symbol"] = symbol
                 element["marketCap"] = market_cap
-                historical_price_with_marketcap.append(element)
-                #print(f"Element: {element}")    
+                historical_price_with_marketcap.append(element) 
 
             print(f"Fetched Historical stock price json data from API for symbol: {symbol}")
 
@@ -111,7 +102,8 @@ class FmpApiToDatabase():
             historical_prices_repo.load_data(historical_price_with_marketcap)
 
             print(f"loaded Historical stock prices API data into Historical price table for symbol: {symbol}")
-
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            executor.map(fetch_and_process_data, symbols)
 
     def load_daily_prices():
         
