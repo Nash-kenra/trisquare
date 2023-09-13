@@ -1,11 +1,11 @@
 from pulse.fmpapi.index_companies import SP500
 from pulse.fmpapi.index_companies import Nasdaq
 from pulse.fmpapi.index_companies import Dowjones
-from pulse.fmpapi.stock_prices import Global_stocks
+from pulse.fmpapi.stock_prices_api import Global_stocks
 
-from pulse.fmpapi.stock_prices import Historical_prices
-from pulse.fmpapi.stock_prices import Historical_market_cap
-from pulse.fmpapi.stock_prices import Daily_prices
+from pulse.fmpapi.stock_prices_api import Historical_prices
+from pulse.fmpapi.stock_prices_api import Historical_market_cap
+from pulse.fmpapi.stock_prices_api import Daily_prices
 
 # from pulse.fmpapi.get_api import daily_prices
 
@@ -14,10 +14,18 @@ from pulse.fmpapi.stock_prices import Daily_prices
 from pulse.repository.index_companies import SP500_table
 from pulse.repository.index_companies import NASDAQ_table
 from pulse.repository.index_companies import DOWJONES_table
+<<<<<<< Updated upstream
 from pulse.repository.stock_prices import Global_stocks_table
 from pulse.repository.stock_prices import Historical_prices_table
 from pulse.repository.stock_prices import Daily_prices_table
 import datetime
+=======
+from pulse.repository.stock_prices_repo import Global_stocks_table
+from pulse.repository.stock_prices_repo import Historical_prices_table
+from pulse.repository.stock_prices_repo import Daily_prices_table
+from concurrent.futures import ThreadPoolExecutor
+
+>>>>>>> Stashed changes
 
 
 # from pulse.combine.combine import Combine
