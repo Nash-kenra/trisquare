@@ -24,10 +24,6 @@ class GetApi:
     def get_url(self):
         return self.get_uri() + self.query_string + self.get_api_key()
     
-<<<<<<< Updated upstream
-=======
-    
->>>>>>> Stashed changes
     def fetch(self):
         url = self.get_url()
         response = requests.get(url)
