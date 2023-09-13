@@ -82,11 +82,9 @@ class FmpApiToDatabase():
         # Fetch SP500 table and get teh list of symbols
 
         symbols = SP500_table()
-        current_date = datetime.date.today()
-        date_str = current_date.strftime('%Y-%m-%d')
         historical_price_with_marketcap = []
         for symbol in symbols.get_symbols():
-            historical_price_api = Historical_prices(symbol,date_str)
+            historical_price_api = Historical_prices(symbol)
             historical_price_json_data = historical_price_api.fetch()
 
         #     # Get historic Makert cap 
