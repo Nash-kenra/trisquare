@@ -7,7 +7,7 @@ Base = declarative_base()
 
 class SP500_table(Base, PulseDB_Base):
 # Entity class for the DB table SP500 companies. 
-# Manage all the operations like loading and fetching the data from the SP500 table.
+# Manage all the operations like loading the data from the SP500 table.
     __tablename__ = 'sp500'
     symbol = Column(String, primary_key=True)
     company_name = Column(String)
@@ -38,7 +38,7 @@ class SP500_table(Base, PulseDB_Base):
 
 class NASDAQ_table(Base,PulseDB_Base):
 # Entity class for the DB table NASDAQ companies. 
-# Manage all the operations like loading and fetching the data from the NASDAQ table.
+# Manage all the operations like loading the data from the NASDAQ table.
 
     __tablename__ = 'nasdaq'
     symbol = Column(String, primary_key=True)
@@ -66,7 +66,7 @@ class NASDAQ_table(Base,PulseDB_Base):
 
 class DOWJONES_table(Base, PulseDB_Base):
 # Entity class for the DB table DOWJONES companies. 
-# Manage all the operations like loading and fetching the data from the DOWJONES table.
+# Manage all the operations like loading the data from the DOWJONES table.
 
     __tablename__ = 'dowjones'
     symbol = Column(String, primary_key=True)

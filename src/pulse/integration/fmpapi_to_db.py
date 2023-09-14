@@ -22,6 +22,9 @@ class FmpApiToDatabase():
 # This data is passed to the tables for loading. 
 # Mainly focus on loading all the index companies from SP500, NASDAQ and DOWJONES
 
+# {classname}.create_table({class_repo}.getBase()) is used to create table for class. 
+# Generally we run it when we dont have a table createdin pulse DB.
+
     def load_SP500_companies():
 
         sp500_api = SP500()
@@ -29,6 +32,7 @@ class FmpApiToDatabase():
         print("Fetched sp500 json data from API")
 
         sp500_repo = SP500_table()
+        # The below line which is commented is used to create table based on class
         # sp500.create_table(sp500_repo.getBase())
         sp500_repo.load_data(sp500_json_data)
         print("loaded sp500 API data into sp500 table")
@@ -40,6 +44,7 @@ class FmpApiToDatabase():
         print("Fetched Nasdaq json data from API")
 
         nasdaq_repo = NASDAQ_table()
+        # The below line which is commented is used to create table based on class
         # nasdaq_repo.create_table(nasdaq_repo.getBase())
         nasdaq_repo.load_data(nasdaq_json_data)
         print("loaded Nasdaq API data into Nasdaq table")
@@ -50,9 +55,17 @@ class FmpApiToDatabase():
         print("Fetched Dowjones json data from API")
 
         dowjones_repo = DOWJONES_table()
+        # The below line which is commented is used to create table based on class
         # dowjones_repo.create_table(dowjones_repo.getBase())
         dowjones_repo.load_data(dowjones_json_data)
         print("loaded Dowjones API data into Dowjones table")
+
+    def load_index_companies():
+        #This method is used to load all the index stocks.
+        FmpApiToDatabase.load_SP500_companies()
+        FmpApiToDatabase.load_Nasdaq_companies()
+        FmpApiToDatabase.load_Dowjones_companies()
+
 
     def load_global_stocks():
         global_stocks_api = Global_stocks()
@@ -60,17 +73,15 @@ class FmpApiToDatabase():
         print("Fetched global stocks json data from API")
 
         global_stocks_repo = Global_stocks_table()
+        # The below line which is commented is used to create table based on class
         # globalstocks_repo.create_table(globalstocks_repo.getBase())
         global_stocks_repo.load_data(global_stocks_json_data)
         print("loaded Global stock API data into globalstocks table")
 
-    def load_index_companies():
-        FmpApiToDatabase.load_SP500_companies()
-        FmpApiToDatabase.load_Nasdaq_companies()
-        FmpApiToDatabase.load_Dowjones_companies()
-
 
     def load_historical_prices():
+        # We are here getting historic prices of SP500 stocks. So fetching the symbols 
+        # of SP500
         symbols = Queries().get_symbols()
         def fetch_and_process_data(company_symbol):
             historical_price_api = Historical_prices(company_symbol)
@@ -104,8 +115,8 @@ class FmpApiToDatabase():
 
 
     def load_daily_prices():
-        
-        # Fetch SP500 table and get teh list of symbols
+        # We are here getting daily prices of SP500 stocks. So fetching the symbols 
+        # of SP500
         symbols = Queries()
         for symbol in symbols.get_symbols():
             daily_prices_api = Daily_prices(symbol)

@@ -3,6 +3,7 @@ from pulse.repository.index_companies_repo import SP500_table
 from pulse.repository.stock_prices_repo import Daily_prices_table
 from sqlalchemy import func
 
+# This class has all the different queries of different tables that can be used.
 class Queries:
     def get_sectors(self):
         db_connector = DatabaseConnect()

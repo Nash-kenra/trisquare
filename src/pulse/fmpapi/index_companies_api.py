@@ -1,6 +1,5 @@
 from pulse.fmpapi.get_api import GetApi
 
-
 class SP500(GetApi):
 # The class just need to fill in the details of the query string for SP500. The Base class 
 # takes care of all the execution of the rest of the functionality
