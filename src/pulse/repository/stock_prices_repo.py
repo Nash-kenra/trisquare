@@ -7,7 +7,9 @@ Base = declarative_base()
 
 class Global_stocks_table(Base, PulseDB_Base):
 # Entity class for the DB table Global companies. 
-# Manage all the operations like loading and fetching the data from the global stocks table.
+
+# Manage all the operations like loading the data from the global stocks table.
+
 
     __tablename__ = 'globalstocks'
     symbol = Column(String, primary_key=True)
@@ -31,36 +33,11 @@ class Global_stocks_table(Base, PulseDB_Base):
             company_type=element["type"]
         )
         return row
-    
-
-class Global_etfs_table(Base, PulseDB_Base):
-# Entity class for the DB table Global etf companies. 
-# Manage all the operations like loading and fetching the data from the global etf table.
-
-    __tablename__ = 'globaletfs'
-    symbol = Column(String, primary_key=True)
-    company_name = Column(String)
-    price = Column(Float)
-    exchange = Column(String)
-    exchange_short_name = Column(String)
-    company_type = Column(String)
-
-
-    def getBase(self):
-        return Base
-
-    def convert(self, element):
-        row = Global_etfs_table(
-            symbol=element["symbol"],
-            company_name=element["name"],
-            price=element["price"],
-            exchange=element["exchange"],
-            exchange_short_name=element["exchangeShortName"],
-            company_type=element["type"]
-        )
-        return row
 
 class Daily_prices_table(Base, PulseDB_Base):
+# Entity class for the DB table daily_prices. 
+# Manage all the operations like loading the data from the daily_prices table.
+
     __tablename__ = 'daily_prices'
     symbol = Column(String, primary_key=True)
     date_time = Column(DateTime, primary_key=True)  # Change the data type to DateTime
@@ -117,6 +94,9 @@ class Daily_prices_table(Base, PulseDB_Base):
 
 
 class Historical_prices_table(Base, PulseDB_Base):
+# Entity class for the DB table historical_prices. 
+# Manage all the operations like loading the data from the historical_prices table.
+
     __tablename__ = 'historical_prices'
     symbol = Column(String, primary_key=True)
     date_time = Column(DateTime, primary_key=True)

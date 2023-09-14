@@ -1,14 +1,15 @@
-// src/App.js
-
 import React from 'react';
 import './App.css';
-import SectorsTable from './components/SectorsTable';
+import Sectors from './components/Sectors'; // Import the Sectors component
+
 
 function App() {
   return (
     <div className="App">
-      <h1>Welcome to the Wave App</h1>
-      <SectorsTable />
+      <h1>TriSquare</h1>
+      {/* Other components or content */}
+      <Sectors /> {/* Include the Sectors component */}
+      {/* Other components or content */}
     </div>
   );
 }

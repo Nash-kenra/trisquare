@@ -1,8 +1,4 @@
-from core.configuration.config import Config
 from pulse.fmpapi.get_api import GetApi
-
-import requests
-
 
 class SP500(GetApi):
 # The class just need to fill in the details of the query string for SP500. The Base class 

@@ -1,3 +1,4 @@
+-- Table creation commands. New setup can run this.
 -- Drop tables
 DROP MATERIALIZED view if EXISTS public.sectors_subsectors_mv;
 DROP TABLE if EXISTS public.dowjones;
