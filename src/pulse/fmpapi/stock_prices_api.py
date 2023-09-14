@@ -6,6 +6,7 @@ class Global_stocks(GetApi):
 # The class just need to fill in the details of the query string for global stocks. 
 # The Base class takes care of all the execution of the rest of the functionality.
     def __init__(self)->None:
+
         super().__init__("stock/list?")
 
 
@@ -32,3 +33,4 @@ class Daily_prices(GetApi):
     def __init__(self, symbol)->None :
         query = "quote/" + symbol +"?"
         super().__init__(query)
+

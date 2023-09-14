@@ -7,7 +7,9 @@ Base = declarative_base()
 
 class Global_stocks_table(Base, PulseDB_Base):
 # Entity class for the DB table Global companies. 
+
 # Manage all the operations like loading the data from the global stocks table.
+
 
     __tablename__ = 'globalstocks'
     symbol = Column(String, primary_key=True)
@@ -35,6 +37,7 @@ class Global_stocks_table(Base, PulseDB_Base):
 class Daily_prices_table(Base, PulseDB_Base):
 # Entity class for the DB table daily_prices. 
 # Manage all the operations like loading the data from the daily_prices table.
+
     __tablename__ = 'daily_prices'
     symbol = Column(String, primary_key=True)
     date_time = Column(DateTime, primary_key=True)  # Change the data type to DateTime
@@ -93,6 +96,7 @@ class Daily_prices_table(Base, PulseDB_Base):
 class Historical_prices_table(Base, PulseDB_Base):
 # Entity class for the DB table historical_prices. 
 # Manage all the operations like loading the data from the historical_prices table.
+
     __tablename__ = 'historical_prices'
     symbol = Column(String, primary_key=True)
     date_time = Column(DateTime, primary_key=True)
