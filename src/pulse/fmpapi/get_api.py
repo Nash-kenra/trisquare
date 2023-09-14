@@ -8,7 +8,7 @@ class GetApi:
 # The class is the base class for all the APIs. It does all the functionality of building the URL
 # and fetches the data.
 # All the sub classes just needs to provide the query string depending on the API. 
-# 
+
     config = Config()
     def __init__(self, query_string) -> None:
         self.api_config = GetApi.config.load_config()['FmpApi']
