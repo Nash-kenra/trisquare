@@ -1,0 +1,17 @@
+/* sectors.css */
+
+.sectors-container {
+    display: flex;
+  }
+  
+  .sectors-text {
+    flex: 0.75;
+  }
+  
+  .sector-image-container img {
+    max-width: 200%; /* Ensure the image doesn't exceed its container */
+    max-height: 500px; /* Set the maximum height of the image */
+    width: auto;
+    height: auto;
+  }
+  

@@ -1,17 +1,22 @@
 import React from 'react';
-import './App.css';
-import Sectors from './components/Sectors'; // Import the Sectors component
-
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import Home from './components/Home';
+import Sectors from './components/Sectors';
+import SectorsMarketCap from './components/SectorsMarketCap';
+import HistoricalData from './components/HistoricalData';
 
 function App() {
   return (
-    <div className="App">
-      <h1>TriSquare</h1>
-      {/* Other components or content */}
-      <Sectors /> {/* Include the Sectors component */}
-      {/* Other components or content */}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sectors" element={<Sectors />} />
+        <Route path="/sectors-marketcap" element={<SectorsMarketCap />} />
+        <Route path="/historical-marketcap" element={<HistoricalData />} />
+      </Routes>
+    </Router>
   );
 }
+
 
 export default App;

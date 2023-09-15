@@ -51,5 +51,39 @@ class Queries:
                 .filter(Daily_prices_table.symbol.in_(symbols))
                 .scalar()
             )
+            formatted_market_cap = f"${total_marketcap:,}"
 
-        return {"sector": selected_sector, "total_marketcap": total_marketcap}
+        return {"sector": selected_sector, "total_marketcap": formatted_market_cap}
+    
+
+
+    def get_all_sectors_marketcap(self):
+        db_connector = DatabaseConnect()
+        session = db_connector.connect_db()
+        
+        with session() as session:
+            # Query all sectors in SP500
+            sectors = session.query(SP500_table.sector).distinct().all()
+            sectors = [sector[0] for sector in sectors]
+
+            sector_marketcaps = {}
+            
+            for sector in sectors:
+                # Query the SP500_table to get all symbols in the current sector
+                sector_companies = session.query(SP500_table.symbol).filter(SP500_table.sector == sector).all()
+                symbols = [company[0] for company in sector_companies]
+
+                # Calculate the total market cap for companies in the current sector
+                total_marketcap = (
+                    session.query(func.sum(Daily_prices_table.market_cap))
+                    .filter(Daily_prices_table.symbol.in_(symbols))
+                    .scalar()
+                )
+
+                # Format the market cap for the current sector
+                formatted_market_cap = f"${total_marketcap:,}"
+                
+                # Store the market cap for the sector in the dictionary
+                sector_marketcaps[sector] = formatted_market_cap
+        
+        return sector_marketcaps
