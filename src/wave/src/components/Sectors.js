@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import './Sectors.css';
+import SectorImage from './Sector.png';
 
 function Sectors() {
   const [sectors, setSectors] = useState([]);
@@ -36,29 +38,36 @@ function Sectors() {
   return (
     <div>
       <h1>SP500 - Sectors</h1>
-      <div>
-        <div className="sector-buttons">
-          {sectors.map((sector) => (
-            <button
-              key={sector.sector}
-              onClick={() => handleSectorClick(sector.sector)}
-              className={selectedSector === sector.sector ? 'active' : ''}
-            >
-              {sector.sector}
-            </button>
-          ))}
+      <div className="sectors-container">
+        <div className="sectors-text">
+          <div>
+            <div className="sector-buttons">
+              {sectors.map((sector) => (
+                <button
+                  key={sector.sector}
+                  onClick={() => handleSectorClick(sector.sector)}
+                  className={selectedSector === sector.sector ? 'active' : ''}
+                >
+                  {sector.sector}
+                </button>
+              ))}
+            </div>
+            {selectedSector && (
+              <div>
+                <h2>Subsectors for {selectedSector}</h2>
+                <ul>
+                  {subsectors.map((subsector) => (
+                    <li key={subsector.subSector}>{subsector.subSector}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="sector-image-container">
+          <img src={SectorImage} />
         </div>
       </div>
-      {selectedSector && (
-        <div>
-          <h2>Subsectors for {selectedSector}</h2>
-          <ul>
-            {subsectors.map((subsector) => (
-              <li key={subsector.subSector}>{subsector.subSector}</li>
-            ))}
-          </ul>
-        </div>
-      )}
       {selectedSector && (
         <div>
           <h2>Market Capitalization for {selectedSector}</h2>

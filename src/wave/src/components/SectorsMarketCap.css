@@ -1,0 +1,32 @@
+/* SectorsMarketCap.css */
+
+.sectors-marketcap {
+    text-align: left;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .sector-name {
+    font-weight: bold;
+  }
+  
+  .market-cap {
+    font-weight: normal;
+  }
+  

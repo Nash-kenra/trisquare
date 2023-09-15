@@ -26,4 +26,13 @@ def get_sector_marketcap(selected_sector):
     query = Queries()
     market_cap = query.get_sector_marketcap(selected_sector)
     return jsonify(market_cap)
+
+
+# Add a new route for retrieving market cap data for all sectors
+@sectors.route('/sectors/marketcap', methods=['GET'])
+def get_all_sectors_marketcaps():
+    query = Queries()
+    # Call the method to fetch market cap data for all sectors
+    market_caps = query.get_all_sectors_marketcap()
+    return jsonify(market_caps)
     
