@@ -80,23 +80,36 @@ class FmpApiToDatabase():
         global_stocks_repo.load_data(global_stocks_json_data)
         print("loaded Global stock API data into globalstocks table")
 
-
+    
     def load_historical_prices():
+        FmpApiToDatabase.load_historical_prices_no_threading()
 
+    def load_historical_prices_with_threading():
         # We are here getting historic prices of SP500 stocks. So fetching the symbols 
         # of SP500
         symbols = Queries().get_symbols()
-        def fetch_and_process_data(company_symbol):
-            historical_price_api = Historical_prices(company_symbol)
-            historical_marketcap_api = Historical_market_cap(company_symbol)
 
-            historical_price_json_data = historical_price_api.fetch()
-            historical_marketcap_json_data = historical_marketcap_api.fetch()
+        # As this is going to make lot of calls, the threading is introduced to make the processing faster
+        with ThreadPoolExecutor(max_workers=15) as executor:
+            executor.map(FmpApiToDatabase.load_historical_prices_for_symbol, symbols)
 
+    # Fetch the historical market cap data and pricing information
+    # and then load the data into database 
+    def load_historical_prices_for_symbol(company_symbol): 
+        
+        historical_price_api = Historical_prices(company_symbol)
+        historical_marketcap_api = Historical_market_cap(company_symbol)
+
+        print(f"Getting historical data for symbol: {company_symbol}")
+        historical_price_json_data = historical_price_api.fetch()
+        historical_marketcap_json_data = historical_marketcap_api.fetch()
+    
+        if len(historical_price_json_data) > 0 and len(historical_marketcap_json_data) > 0:
             symbol = historical_price_json_data['symbol']
-
             market_cap_dict = {element["date"]: element["marketCap"] for element in historical_marketcap_json_data}
             historical_price_with_marketcap = []
+
+            number = 0
             for element in historical_price_json_data["historical"]:
                 date = element["date"]
                 market_cap = market_cap_dict.get(date)
@@ -104,15 +117,43 @@ class FmpApiToDatabase():
                 element["marketCap"] = market_cap
                 historical_price_with_marketcap.append(element)
 
-            print(f"Fetched and processed data for symbol: {symbol}")
+                historical_prices_repo = Historical_prices_table()
+                historical_prices_repo.load_data(historical_price_with_marketcap)
+                number = number + 1
+                print(f"Loaded data into Historical prices table for the symbol: {symbol} on {date}")    
+        else:
+            print(f"Historical market data is not available for the symbol: {company_symbol} ")    
 
-            historical_prices_repo = Historical_prices_table()
-            historical_prices_repo.load_data(historical_price_with_marketcap)
+    def load_historical_prices_no_threading(): 
+        symbols = Queries().get_symbols()
+        for company_symbol in symbols: 
+            
+            historical_price_api = Historical_prices(company_symbol)
+            historical_marketcap_api = Historical_market_cap(company_symbol)
 
-            print(f"Loaded data into Historical prices table for symbol: {symbol}")    
-        # Use ThreadPoolExecutor to fetch and process data concurrently
-        with ThreadPoolExecutor(max_workers=10) as executor:
-            executor.map(fetch_and_process_data, symbols)
+            print(f"Getting historical data for symbol: {company_symbol}")
+            historical_price_json_data = historical_price_api.fetch()
+            historical_marketcap_json_data = historical_marketcap_api.fetch()
+    
+            if len(historical_price_json_data) > 0 and len(historical_marketcap_json_data) > 0:
+                symbol = historical_price_json_data['symbol']
+                market_cap_dict = {element["date"]: element["marketCap"] for element in historical_marketcap_json_data}
+                historical_price_with_marketcap = []
+                for element in historical_price_json_data["historical"]:
+                    date = element["date"]
+                    market_cap = market_cap_dict.get(date)
+                    element["symbol"] = symbol
+                    element["marketCap"] = market_cap
+                    historical_price_with_marketcap.append(element)
+
+                historical_prices_repo = Historical_prices_table()
+                historical_prices_repo.load_data(historical_price_with_marketcap)
+
+                print(f"Loaded data into Historical prices table for symbol: {symbol}")    
+            else:
+               print(f"Historical market data is not available for the symbol: {company_symbol} ")    
+
+        
 
 
     def load_daily_prices():
