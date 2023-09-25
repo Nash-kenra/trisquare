@@ -1,4 +1,4 @@
-from core.configuration.config import Config
+from core.configuration.config_singleton import config_singleton
 import requests
 import datetime
 import time
@@ -12,7 +12,7 @@ class GetApi:
     # and fetches the data.
     # All the sub classes just needs to provide the query string depending on the API.
 
-    config = Config()
+    config = config_singleton()
 
     # As per our subscription, we can make only 300 calls per minute. So if we exceed 300, then API doesn't respond. 
     # It's causing an error especially loading historical data for all the stocks. 
