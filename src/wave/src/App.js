@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Sectors from './components/Sectors';
 import SectorsMarketCap from './components/SectorsMarketCap';
 import HistoricalData from './components/HistoricalData';
+import CompareMarketCap from './components/CompareMarketCap';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/sectors" element={<Sectors />} />
         <Route path="/sectors-marketcap" element={<SectorsMarketCap />} />
         <Route path="/historical-marketcap" element={<HistoricalData />} />
+        <Route path="/compare-marketcap" element={<CompareMarketCap />} />
       </Routes>
     </Router>
   );

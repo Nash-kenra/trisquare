@@ -1,0 +1,48 @@
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Style for the box with curved edges and shadow */
+.box {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 50%; /* Adjust as needed */
+    margin: 10px;
+}
+
+/* Style for the chart container */
+.chart-container {
+    height: 650px;
+}
+
+.table-container {
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+    justify-content: center; /* Center the content vertically */
+}
+button {
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+.selected-button {
+    background-color: #007BFF; /* Change the background color to your desired color */
+    color: #fff; /* Change the text color to your desired color */
+}

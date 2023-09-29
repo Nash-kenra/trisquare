@@ -9,6 +9,7 @@ function Home() {
       <div className="home-links">
         <Link to="/sectors" className="home-link">Sectors Subsectors</Link>
         <Link to="/sectors-marketcap" className="home-link">Sectors Market Cap</Link>
+        <Link to="/compare-marketcap" className="home-link">compare Market Cap</Link>
       </div>
     </div>
   );
