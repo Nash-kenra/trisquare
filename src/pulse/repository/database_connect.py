@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from core.configuration.config import Config
+from core.configuration.config_singleton import config_singleton
 class DatabaseConnect:
 # The centralized class for the database connections and sessions
 
@@ -8,7 +8,7 @@ class DatabaseConnect:
         self.session = None
 
     def connect_db(self):
-        config = Config()
+        config = config_singleton()
         db_config = config.load_config()['database']
         DATABASE_URL = f"postgresql://{db_config['username']}:{db_config['password']}@{db_config['hostname']}:{db_config['port']}/{db_config['database']}"
         engine = create_engine(DATABASE_URL)
@@ -16,7 +16,7 @@ class DatabaseConnect:
         return session
     
     def create_engine(self):
-        config = Config()
+        config = config_singleton()
         db_config = config.load_config()['database']
         DATABASE_URL = f"postgresql://{db_config['username']}:{db_config['password']}@{db_config['hostname']}:{db_config['port']}/{db_config['database']}"
         engine = create_engine(DATABASE_URL)
