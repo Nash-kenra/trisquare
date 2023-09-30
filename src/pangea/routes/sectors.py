@@ -36,3 +36,10 @@ def get_all_sectors_marketcaps():
     market_caps = query.get_all_sectors_marketcap()
     return jsonify(market_caps)
     
+# Add a new route for retrieving periodic market cap data for all sectors
+@sectors.route('/sectors/periodic_marketcap_data', methods=['GET'])
+def get_periodic_marketcap_data():
+    query = Queries()
+    # Call the method to fetch market cap data for all sectors
+    periodic_market_caps = query.get_periodic_marketcap_for_sectors()
+    return jsonify(periodic_market_caps)

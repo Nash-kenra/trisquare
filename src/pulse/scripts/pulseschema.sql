@@ -6,8 +6,10 @@ DROP TABLE if EXISTS public.nasdaq;
 DROP TABLE if EXISTS public.daily_prices;
 DROP TABLE if EXISTS public.historic_prices;
 DROP TABLE if EXISTS public.sp500;
+DROP TABLE if EXISTS public.stock_prices;
 DROP TABLE if EXISTS public.globalstocks;
 DROP TABLE if EXISTS public.globaletfs;
+
 
 CREATE TABLE public.dowjones (
 	symbol varchar NOT NULL,
@@ -32,26 +34,6 @@ CREATE TABLE public.nasdaq (
 	cik varchar NULL,
 	founded timestamp NULL,
 	CONSTRAINT nasdaq_pkey PRIMARY KEY (symbol)
-);
-
--- public.historic_prices definition
-
-CREATE TABLE public.historic_prices (
-	symbol varchar NOT NULL,
-	date_time timestamp NOT NULL,
-	open_price float8 NULL,
-	day_high float8 NULL,
-	day_low float8 NULL,
-	close_price float8 NULL,
-	adj_close float8 NULL,
-	volume int4 NULL,
-	unadjusted_volume int4 NULL,
-	day_change float8 NULL,
-	change_percent float8 NULL,
-	vwap float8 NULL,
-	label_name varchar NULL,
-	change_over_time float8 NULL,
-	CONSTRAINT historic_prices_pkey PRIMARY KEY (symbol, date_time)
 );
 
 -- public.sp500 definition
