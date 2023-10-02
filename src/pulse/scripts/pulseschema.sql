@@ -4,11 +4,12 @@ DROP MATERIALIZED view if EXISTS public.sectors_subsectors_mv;
 DROP TABLE if EXISTS public.dowjones;
 DROP TABLE if EXISTS public.nasdaq;
 DROP TABLE if EXISTS public.daily_prices;
-DROP TABLE if EXISTS public.historic_prices;
+DROP TABLE if EXISTS public.historical_prices;
 DROP TABLE if EXISTS public.sp500;
-DROP TABLE if EXISTS public.stock_prices;
 DROP TABLE if EXISTS public.globalstocks;
 DROP TABLE if EXISTS public.globaletfs;
+DROP TABLE if EXISTS public.stockprices; -- this table is removed, this needs to be removed eventually, kept it for backward compatability
+DROP TABLE if EXISTS public.historic_prices; -- this table is removed, this needs to be removed eventually, kept it for backward compatability
 
 
 CREATE TABLE public.dowjones (
