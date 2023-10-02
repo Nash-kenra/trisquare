@@ -11,4 +11,4 @@ CORS(app)
 app.register_blueprint(sectors.sectors)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=5000)  # Change the port to your desired value
