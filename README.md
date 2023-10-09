@@ -18,3 +18,45 @@ TriSquare is a finance application designed to provide users with comprehensive 
 12. If paced module not found or package not found error - use pip install {packagename} example: pip install numpy and rerun main
 13. You will get the data in your database
 14. Creating connection in DBeaver - set username: postgres, Password: Kenra123, Database: pulse, Hostname: 127.0.0.1, port: 5432
+
+## Run Docker:
+
+# Windows:
+
+1. Install docker desktop
+2. Open C:\Program Files\PostgreSQL\15\data\pg_hba.conf
+3. Add this at end of file
+   host all all 0.0.0.0/0 md5
+4. Open cmd and navigate to cd "C:\Program Files\PostgreSQL\15\bin"
+5. pg_ctl reload -D "C:\Program Files\PostgreSQL\15\data\"
+6. create images and run:
+   cd "D:\trisquare"
+   Run these:
+   docker build -f Dockerfile.pulse -t pulse .
+   docker run -d --name my_pulse pulse
+
+   docker build -f Dockerfile.pangea -t pangea .
+   docker run -p 5000:5000 --name my_pangea pangea
+
+   docker build -f Dockerfile.wave -t wave .
+   docker run -p 3000:3000 --name my_wave wave
+
+# Mac:
+
+1. Install docker desktop
+2. Open /usr/local/pgsql/data/
+3. Open file pg_hba.conf
+4. Add this line on last row
+   host all all 0.0.0.0/0 md5
+5. In terminal run this command: pg_ctl -D /usr/local/pgsql/data/ reload #match the path accordingly
+6. create images and run:
+   cd "D:\trisquare"
+   Run these:
+   docker build -f Dockerfile.pulse -t pulse .
+   docker run -d --name my_pulse pulse
+
+   docker build -f Dockerfile.pangea -t pangea .
+   docker run -p 5000:5000 --name my_pangea pangea
+
+   docker build -f Dockerfile.wave -t wave .
+   docker run -p 3000:3000 --name my_wave wave

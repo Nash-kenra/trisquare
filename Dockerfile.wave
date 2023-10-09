@@ -1,0 +1,23 @@
+# Use an official Node.js base image with a specific version
+FROM node:14
+
+# Set the working directory within the container
+WORKDIR /app
+
+# Copy the package.json and package-lock.json files into the container
+COPY src/wave/package*.json ./
+
+# Install the application dependencies
+RUN npm install
+
+# Copy the entire application directory into the container
+COPY src/wave/ .
+
+# Build your React application
+RUN npm run build
+
+
+EXPOSE 3000
+
+# Define the command to start your React application
+CMD ["npm", "start"]
