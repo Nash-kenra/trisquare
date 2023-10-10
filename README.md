@@ -30,15 +30,21 @@ TriSquare is a finance application designed to provide users with comprehensive 
 4. Open cmd and navigate to cd "C:\Program Files\PostgreSQL\15\bin"
 5. pg_ctl reload -D "C:\Program Files\PostgreSQL\15\data\"
 6. create images and run:
+   
    cd "D:\trisquare"
+   
    Run these:
+   
    docker build -f Dockerfile.pulse -t pulse .
+   
    docker run -d --name my_pulse pulse
 
    docker build -f Dockerfile.pangea -t pangea .
+   
    docker run -p 5000:5000 --name my_pangea pangea
 
    docker build -f Dockerfile.wave -t wave .
+   
    docker run -p 3000:3000 --name my_wave wave
 
 # Mac:
@@ -50,13 +56,19 @@ TriSquare is a finance application designed to provide users with comprehensive 
    host all all 0.0.0.0/0 md5
 5. In terminal run this command: pg_ctl -D /usr/local/pgsql/data/ reload #match the path accordingly
 6. create images and run:
+   
    cd "D:\trisquare"
+
    Run these:
+   
    docker build -f Dockerfile.pulse -t pulse .
+   
    docker run -d --name my_pulse pulse
 
    docker build -f Dockerfile.pangea -t pangea .
+   
    docker run -p 5000:5000 --name my_pangea pangea
 
    docker build -f Dockerfile.wave -t wave .
+   
    docker run -p 3000:3000 --name my_wave wave
