@@ -2,7 +2,6 @@
     "database": {
         "username": "postgres",
         "password": "Kenra123",
-        "hostname": "127.0.0.1",
         "port": "5432",
         "database": "pulse"
     },
