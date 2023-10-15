@@ -14,4 +14,9 @@
     width: auto;
     height: auto;
   }
+
+  .selected-button {
+    background-color: #007BFF; /* Change the background color to your desired color */
+    color: #fff; /* Change the text color to your desired color */
+}
   
