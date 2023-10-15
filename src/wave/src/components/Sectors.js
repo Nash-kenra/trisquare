@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Sectors.css';
 import SectorImage from './Sector.png';
+import { Link } from 'react-router-dom';
+
 
 function Sectors() {
   const [sectors, setSectors] = useState([]);
@@ -37,6 +39,7 @@ function Sectors() {
 
   return (
     <div>
+      <Link to="/" className="home-link">Home</Link>
       <h1>SP500 - Sectors</h1>
       <div className="sectors-container">
         <div className="sectors-text">
@@ -46,7 +49,7 @@ function Sectors() {
                 <button
                   key={sector.sector}
                   onClick={() => handleSectorClick(sector.sector)}
-                  className={selectedSector === sector.sector ? 'active' : ''}
+                  className={selectedSector === sector.sector ? 'selected-button' : ''}
                 >
                   {sector.sector}
                 </button>

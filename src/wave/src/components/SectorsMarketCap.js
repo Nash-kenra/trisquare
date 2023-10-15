@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function SectorsMarketCap() {
   const [sectorMarketCaps, setSectorMarketCaps] = useState([]);
@@ -33,6 +34,7 @@ function SectorsMarketCap() {
 
   return (
     <div>
+      <Link to="/" className="home-link">Home</Link>
       <h1>Sectors Market Cap</h1>
       <ul>
         {sectorMarketCaps.map((sector) => (

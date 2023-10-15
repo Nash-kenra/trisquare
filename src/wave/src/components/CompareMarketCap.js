@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as echarts from 'echarts';
 import './CompareMarketCap.css'; 
+import { Link } from 'react-router-dom';
 
 const CompareMarketCap = () => {
   // State to store the fetched data
@@ -215,6 +216,8 @@ const CompareMarketCap = () => {
   }, [dataFetched, selectedComparison]);
 
   return (
+      <div>
+        <Link to="/" className="home-link">Home</Link>
       <div className="container">
       <div className="box chart-container">
         <div>
@@ -276,7 +279,7 @@ const CompareMarketCap = () => {
         </table>
       </div>
       </div>
-
+      </div>
   );
 };
 
