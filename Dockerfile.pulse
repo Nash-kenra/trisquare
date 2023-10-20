@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy the code, requirements file, and data folders into the image
 COPY src/pulse_loader.py .
 COPY requirements.txt .
-COPY src/config.json
+COPY src/config.json .
 
 COPY src/pulse /app/pulse
 COPY src/core /app/core
