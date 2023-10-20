@@ -12,7 +12,7 @@ class config_singleton:
     def load_config(self):
         
         try:
-            with open('./core/configuration/config.json', 'r') as file:
+            with open('config.json', 'r') as file:
                 self.config = json.load(file)
         except FileNotFoundError:
             print(f"Configuration file 'config.json' not found.")
