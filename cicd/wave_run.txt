@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Pull and Run Image') {
+            steps {
+                script {
+                    // Use withCredentials to securely log in and build the Docker image
+                    git branch: 'avi-dockerjenkins', url: 'https://github.com/kenrasoftorg/trisquare.git'
+                    def pangeaimageTag = readFile('C:/Users/avina/.jenkins/workspace/pangea_build/pangeaversion.txt').trim() // Read the image tag from version.txt
+                    def waveimageTag = readFile('C:/Users/avina/.jenkins/workspace/wave_build/waveversion.txt').trim() // Read the image tag from version.txt
+                    def credentialsId = 'docker-hub-password'
+                    // Retrieve the secret text (password) using the credentials ID
+                    def password = credentials(credentialsId)
+                    withCredentials([string(credentialsId: credentialsId, variable: 'DOCKER_PASSWORD')]) {
+                        bat """
+                            docker login -u nashkenra -p '$DOCKER_PASSWORD'
+                            docker pull nashkenra/kenrasoft:${waveimageTag}
+                            docker run -d --name my_wave -p 3000:3000 nashkenra/kenrasoft:${waveimageTag}
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
