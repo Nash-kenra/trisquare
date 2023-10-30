@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: 'avi-dockerjenkins']], userRemoteConfigs: [[url: 'https://github.com/kenrasoftorg/trisquare.git', credentialsId: 'git-ssh']]])
+                }
+            }
+        }
+        stage('Generate and Store Version') {
+            steps {
+                script {
+                    // Generate the version number based on your strategy
+                    def versionNumber = "pulseV1.0.1"// Generate version number here
+
+                    // Store the version in a shared location (e.g., a text file)
+                    writeFile file: 'pulseversion.txt', text: versionNumber
+                    def workspaceLocation = pwd()
+                    echo "Location of version.txt: ${workspaceLocation}/pulseversion.txt"
+                }
+            }
+        }
+        stage('Build Pulse Image') {
+            steps {
+                script {
+                    // Define the credentials ID
+                    def credentialsId = 'docker-hub-password'
+                    // Retrieve the secret text (password) using the credentials ID
+                    def password = credentials(credentialsId)
+                    // Use withCredentials to securely log in and build the Docker image
+                    git branch: 'avi-dockerjenkins', url: 'https://github.com/kenrasoftorg/trisquare.git'
+                    def imageName = "pulse"
+                    def imageTag = readFile('pulseversion.txt').trim()
+                    withCredentials([string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')]) {
+                    bat """
+                        docker login -u nashkenra -p '$DOCKER_PASSWORD'
+                        docker build -f Dockerfile.pulse -t ${imageName} .
+                        docker tag ${imageName} nashkenra/kenrasoft:${imageTag}
+                        docker push nashkenra/kenrasoft:${imageTag}
+                    """
+                    }
+                }
+            }
+        }
+    }
+}
