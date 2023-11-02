@@ -7,6 +7,7 @@ DROP TABLE if EXISTS public.daily_prices;
 DROP TABLE if EXISTS public.historical_prices;
 DROP TABLE if EXISTS public.sp500;
 DROP TABLE if EXISTS public.globalstocks;
+DROP TABLE if EXISTS public.comp_estimates;
 DROP TABLE if EXISTS public.globaletfs;
 DROP TABLE if EXISTS public.stockprices; -- this table is removed, this needs to be removed eventually, kept it for backward compatability
 DROP TABLE if EXISTS public.historic_prices; -- this table is removed, this needs to be removed eventually, kept it for backward compatability
@@ -90,6 +91,34 @@ CREATE TABLE public.globalstocks (
 	company_type varchar NULL,
 	CONSTRAINT globalstocks_pkey PRIMARY KEY (symbol)
 );
+
+-- public.comp_estimates definition
+CREATETABLE  public.comp_estimates (
+	symbol varchar NOT NULL,
+	date_time timestamp NOT NULL,
+	estimatedrevenuelow float8 NULL,
+	estimatedrevenuehigh float8 NULL,
+	estimatedrevenueavg float8 NULL,
+	estimatedebitdalow float8 NULL,
+	estimatedebitdahigh float8 NULL,
+	estimatedebitdaavg float8 NULL,
+    estimatedebitlow float8 NULL,
+    estimatedebithigh float8 NULL,
+    estimatedebitavg float8 NULL,
+    estimatednetincomelow float8 NULL,
+    estimatednetincomehigh float8 NULL,
+    estimatednetincomeavg float8 NULL,
+    estimatedsgaexpenselow float8 NULL,
+    estimatedsgaexpensehigh float8 NULL,
+    estimatedsgaexpenseavg float8 NULL,
+    estimatedepsavg float8 NULL,
+    estimatedepshigh float8 NULL,
+    estimatedepslow float8 NULL,
+    numberanalystestimatedrevenue int4 NULL,
+    numberanalystsestimatedeps int4 NULL,
+	CONSTRAINT comp_estimates_pkey PRIMARY KEY (symbol)
+);
+
 
  
 -- public.historical_prices definition

@@ -6,6 +6,8 @@ FmpApiToDatabase.load_index_companies()
 
 FmpApiToDatabase.load_global_stocks()
 
+FmpApiToDatabase.load_comp_estimates()
+
 FmpApiToDatabase.load_historical_prices()
 
 FmpApiToDatabase.load_daily_prices()

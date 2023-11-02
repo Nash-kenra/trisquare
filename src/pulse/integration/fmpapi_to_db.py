@@ -3,6 +3,7 @@ from pulse.fmpapi.index_companies_api import SP500
 from pulse.fmpapi.index_companies_api import Nasdaq
 from pulse.fmpapi.index_companies_api import Dowjones
 from pulse.fmpapi.stock_prices_api import Global_stocks
+from pulse.fmpapi.company_analysis_api import Comp_Estimates
 
 from pulse.fmpapi.stock_prices_api import Historical_prices
 from pulse.fmpapi.stock_prices_api import Historical_market_cap
@@ -15,6 +16,8 @@ from pulse.repository.index_companies_repo import DOWJONES_table
 from pulse.repository.stock_prices_repo import Global_stocks_table
 from pulse.repository.stock_prices_repo import Historical_prices_table
 from pulse.repository.stock_prices_repo import Daily_prices_table
+from pulse.repository.company_analysis_repo import Comp_Estimates_table
+
 from pulse.repository.queries import Queries
 from concurrent.futures import ThreadPoolExecutor
 
@@ -153,9 +156,6 @@ class FmpApiToDatabase():
             else:
                print(f"Historical market data is not available for the symbol: {company_symbol} ")    
 
-        
-
-
     def load_daily_prices():
         # We are here getting daily prices of SP500 stocks. So fetching the symbols 
         # of SP500
@@ -170,3 +170,19 @@ class FmpApiToDatabase():
             daily_prices_repo.load_data(daily_prices_json_data)
 
             print(f"loaded stock prices API data into stock price table for symbol: {symbol}")
+
+    def load_comp_estimates():
+        # We are here getting daily prices of SP500 stocks. So fetching the symbols 
+        # of SP500
+        symbols = Queries()
+        for symbol in symbols.get_symbols():
+            comp_estimates_api = Comp_Estimates(symbol)
+            comp_estimates_json_data = comp_estimates_api.fetch()
+
+            print(f"Fetched analyst estimates json data from API for symbol: {symbol}")
+
+            analyst_estimates_repo = Comp_Estimates_table()
+            analyst_estimates_repo.load_data(comp_estimates_json_data)
+
+            print(f"loaded analyst estimates API data into comp_estimates table for symbol: {symbol}")
+            
