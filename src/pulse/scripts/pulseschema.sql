@@ -11,7 +11,7 @@ DROP TABLE if EXISTS public.comp_estimates;
 DROP TABLE if EXISTS public.globaletfs;
 DROP TABLE if EXISTS public.stockprices; -- this table is removed, this needs to be removed eventually, kept it for backward compatability
 DROP TABLE if EXISTS public.historic_prices; -- this table is removed, this needs to be removed eventually, kept it for backward compatability
-
+DROP TABLE if EXISTS public.COMP_RECOM;
 
 CREATE TABLE public.dowjones (
 	symbol varchar NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE public.globalstocks (
 );
 
 -- public.comp_estimates definition
-CREATETABLE  public.comp_estimates (
+CREATE TABLE  public.comp_estimates (
 	symbol varchar NOT NULL,
 	date_time timestamp NOT NULL,
 	estimatedrevenuelow float8 NULL,
@@ -161,6 +161,16 @@ CREATE TABLE public.comp_ratings (
 	rating_details_pb_score int4 NULL,
 	rating_details_pb_recommendation varchar NULL,
 	CONSTRAINT comp_ratings_pkey PRIMARY KEY (symbol, date_time)
+
+CREATE TABLE public.COMP_RECOM (
+	symbol varchar NOT NULL,
+	date_time timestamp NOT NULL,
+	analyst_ratings_buy int4 NULL,
+	analyst_ratings_hold int4 NULL,
+	analyst_ratings_sell int4 NULL,
+	analyst_ratings_strong_sell int4 NULL,
+	analyst_ratings_strong_buy int4 NULL,
+	CONSTRAINT COMP_RECOM_pkey PRIMARY KEY (symbol,date_time)
 );
 
 -- public.sectors_subsectors_mv source

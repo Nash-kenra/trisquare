@@ -116,3 +116,30 @@ class Comp_ratings_table(Base, PulseDB_Base):
                 rating_details_pb_recommendation=element["ratingDetailsPBRecommendation"]
         )
         return row
+
+class comp_recom_table(Base, PulseDB_Base):
+    # Entity class for the DB table comp_recom.       
+    __tablename__='comp_recom' 
+    symbol = Column(String, primary_key=True)
+    date_time = Column(DateTime, primary_key=True)
+    analyst_ratings_buy = Column(INTEGER)
+    analyst_ratings_hold = Column(INTEGER)
+    analyst_ratings_sell  = Column(INTEGER)
+    analyst_ratings_strong_sell= Column(INTEGER)
+    analyst_ratings_strong_buy= Column(INTEGER)
+    
+    def getBase(self):
+        return Base
+    # Mapping response elements to table colums.
+    def convert(self, element):
+        row = comp_recom_table(
+                symbol=element["symbol"],
+                date_time=element["date"],
+                analyst_ratings_buy=element["analystRatingsbuy"],
+                analyst_ratings_hold=element["analystRatingsHold"],
+                analyst_ratings_sell=element["analystRatingsSell"],
+                analyst_ratings_strong_sell=element["analystRatingsStrongSell"],
+                analyst_ratings_strong_buy=element["analystRatingsStrongBuy"]
+        )
+        return row    
+
