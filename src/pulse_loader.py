@@ -11,3 +11,5 @@ FmpApiToDatabase.load_comp_estimates()
 FmpApiToDatabase.load_historical_prices()
 
 FmpApiToDatabase.load_daily_prices()
+
+FmpApiToDatabase.load_comp_recom()
