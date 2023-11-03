@@ -4,6 +4,7 @@ from pulse.fmpapi.index_companies_api import Nasdaq
 from pulse.fmpapi.index_companies_api import Dowjones
 from pulse.fmpapi.stock_prices_api import Global_stocks
 from pulse.fmpapi.company_analysis_api import Comp_Estimates
+from pulse.fmpapi.company_analysis_api import Comp_Ratings
 
 from pulse.fmpapi.stock_prices_api import Historical_prices
 from pulse.fmpapi.stock_prices_api import Historical_market_cap
@@ -17,6 +18,7 @@ from pulse.repository.stock_prices_repo import Global_stocks_table
 from pulse.repository.stock_prices_repo import Historical_prices_table
 from pulse.repository.stock_prices_repo import Daily_prices_table
 from pulse.repository.company_analysis_repo import Comp_Estimates_table
+from pulse.repository.company_analysis_repo import Comp_ratings_table
 
 from pulse.repository.queries import Queries
 from concurrent.futures import ThreadPoolExecutor
@@ -185,4 +187,21 @@ class FmpApiToDatabase():
             analyst_estimates_repo.load_data(comp_estimates_json_data)
 
             print(f"loaded analyst estimates API data into comp_estimates table for symbol: {symbol}")
+            
+
+    def load_comp_ratings():
+            # We are here getting daily prices of SP500 stocks. So fetching the symbols 
+            # of SP500
+        symbols = Queries()
+        for symbol in symbols.get_symbols():
+            
+            Comp_ratings_api = Comp_Ratings(symbol)
+            Comp_ratings_json_data = Comp_ratings_api.fetch()
+
+            print(f"Fetched analyst estimates json data from API for symbol: {symbol}")
+
+            analyst_ratings_repo = Comp_ratings_table()
+            analyst_ratings_repo.load_data(Comp_ratings_json_data)
+
+            print(f"loaded analyst ratings API data into Comp_Ratings table for symbol: {symbol}")
             

@@ -142,7 +142,26 @@ CREATE TABLE public.historical_prices (
 	CONSTRAINT historical_prices_pkey PRIMARY KEY (symbol, date_time)
 );
 
-
+CREATE TABLE public.comp_ratings (
+	symbol varchar NOT NULL,
+	date_time timestamp NOT NULL,
+	rating varchar NULL,
+	rating_score int4 NULL,
+	rating_recommendation varchar NULL,
+	rating_details_dcf_score int4 NULL,
+	rating_details_dcf_recommendation varchar NULL,
+	rating_details_roe_score int4 NULL,
+	rating_details_roe_recommendation varchar NULL,
+	rating_details_roa_score int4 NULL,
+	rating_details_roa_recommendation varchar NULL,
+	rating_details_de_score int4 NULL,
+	rating_details_de_recommendation varchar NULL,
+	rating_details_pe_score int4 NULL,
+	rating_details_pe_recommendation varchar NULL,
+	rating_details_pb_score int4 NULL,
+	rating_details_pb_recommendation varchar NULL,
+	CONSTRAINT comp_ratings_pkey PRIMARY KEY (symbol, date_time)
+);
 
 -- public.sectors_subsectors_mv source
 
