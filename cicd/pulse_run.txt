@@ -5,12 +5,8 @@ pipeline {
         stage('Pull and Run Image') {
             steps {
                 script {
-                    // Use withCredentials to securely log in and build the Docker image
-                    def credentialsId = 'docker-hub-password'
-                    git branch: 'avi-dockerjenkins', url: 'https://github.com/kenrasoftorg/trisquare.git'
-                    def imageTag = readFile('C:/Users/avina/.jenkins/workspace/pulse_build/version.txt').trim() // Read the image tag from version.txt
-                    // Retrieve the secret text (password) using the credentials ID
-                    def password = credentials(credentialsId)
+                    git branch: 'main', url: 'https://github.com/kenrasoftorg/trisquare.git'
+                    def imageTag = readFile('C:/Users/avina/.jenkins/workspace/pulse_build/pulseversion.txt').trim() // Read the image tag from version.txt
                     withCredentials([string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')]) {
                         bat """
                             docker login -u nashkenra -p '$DOCKER_PASSWORD'

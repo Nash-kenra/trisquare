@@ -5,13 +5,13 @@ FROM node:14
 WORKDIR /app
 
 # Copy the package.json and package-lock.json files into the container
-COPY src/wave/package*.json ./
+COPY ../src/wave/package*.json ./
 
 # Install the application dependencies
 RUN npm install
 
 # Copy the entire application directory into the container
-COPY src/wave/ .
+COPY ../src/wave/ .
 
 # Build your React application
 RUN npm run build

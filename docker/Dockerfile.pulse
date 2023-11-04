@@ -5,12 +5,12 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy the code, requirements file, and data folders into the image
-COPY src/pulse_loader.py .
-COPY requirements.txt .
-COPY src/config.json .
+COPY ../src/pulse_loader.py .
+COPY ../requirements.txt .
+COPY ../src/config.json .
 
-COPY src/pulse /app/pulse
-COPY src/core /app/core
+COPY ../src/pulse /app/pulse
+COPY ../src/core /app/core
 
 # Install Python dependencies from requirements.txt
 RUN pip install -r requirements.txt
