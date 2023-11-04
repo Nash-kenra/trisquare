@@ -69,6 +69,54 @@ class Comp_Estimates_table(Base, PulseDB_Base):
         )
         return row
 
+class Comp_ratings_table(Base, PulseDB_Base):
+# Entity class for the DB table Comp_ratings. 
+# Manage all the operations like loading the data from the Comp_ratings table.
+
+    __tablename__ = 'comp_ratings'
+    symbol = Column(String, primary_key=True)
+    date_time = Column(DateTime, primary_key=True)
+    rating = Column(String)
+    rating_score = Column(INTEGER)
+    rating_recommendation = Column(String)
+    rating_details_dcf_score = Column(INTEGER)
+    rating_details_dcf_recommendation = Column(String)
+    rating_details_roe_score = Column(INTEGER)
+    rating_details_roe_recommendation = Column(String)
+    rating_details_roa_score = Column(INTEGER)
+    rating_details_roa_recommendation = Column(String)
+    rating_details_de_score = Column(INTEGER)
+    rating_details_de_recommendation = Column(String)
+    rating_details_pe_score = Column(INTEGER)
+    rating_details_pe_recommendation = Column(String)
+    rating_details_pb_score = Column(INTEGER)
+    rating_details_pb_recommendation = Column(String)
+
+    def getBase(self):
+        return Base
+
+    def convert(self, element):
+        row = Comp_ratings_table(
+                symbol=element["symbol"],
+                date_time=element["date"],
+                rating=element["rating"],
+                rating_score=element["ratingScore"],
+                rating_recommendation=element["ratingRecommendation"],
+                rating_details_dcf_score=element["ratingDetailsDCFScore"],
+                rating_details_dcf_recommendation=element["ratingDetailsDCFRecommendation"],
+                rating_details_roe_score=element["ratingDetailsROEScore"],
+                rating_details_roe_recommendation=element["ratingDetailsROERecommendation"],
+                rating_details_roa_score=element["ratingDetailsROAScore"],
+                rating_details_roa_recommendation=element["ratingDetailsROARecommendation"],
+                rating_details_de_score=element["ratingDetailsDEScore"],
+                rating_details_de_recommendation=element["ratingDetailsDERecommendation"],
+                rating_details_pe_score=element["ratingDetailsPEScore"],
+                rating_details_pe_recommendation=element["ratingDetailsPERecommendation"],
+                rating_details_pb_score=element["ratingDetailsPBScore"],
+                rating_details_pb_recommendation=element["ratingDetailsPBRecommendation"]
+        )
+        return row
+
 class comp_recom_table(Base, PulseDB_Base):
     # Entity class for the DB table comp_recom.       
     __tablename__='comp_recom' 
@@ -94,3 +142,4 @@ class comp_recom_table(Base, PulseDB_Base):
                 analyst_ratings_strong_buy=element["analystRatingsStrongBuy"]
         )
         return row    
+
