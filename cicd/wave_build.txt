@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    checkout([$class: 'GitSCM', branches: [[name: 'avi-dockerjenkins']], userRemoteConfigs: [[url: 'https://github.com/kenrasoftorg/trisquare.git', credentialsId: 'git-ssh']]])
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/kenrasoftorg/trisquare.git', credentialsId: 'git-ssh']]])
                 }
             }
         }
@@ -13,7 +13,6 @@ pipeline {
                 script {
                     // Generate the version number based on your strategy
                     def versionNumber = "waveV1.0.0"// Generate version number here
-
                     // Store the version in a shared location (e.g., a text file)
                     writeFile file: 'waveversion.txt', text: versionNumber
                     def workspaceLocation = pwd()
@@ -24,18 +23,13 @@ pipeline {
         stage('Build Pulse Image') {
             steps {
                 script {
-                    // Define the credentials ID
-                    def credentialsId = 'docker-hub-password'
-                    // Retrieve the secret text (password) using the credentials ID
-                    def password = credentials(credentialsId)
-                    // Use withCredentials to securely log in and build the Docker image
-                    git branch: 'avi-dockerjenkins', url: 'https://github.com/kenrasoftorg/trisquare.git'
+                    git branch: 'main', url: 'https://github.com/kenrasoftorg/trisquare.git'
                     def imageName = "wave"
                     def imageTag = readFile('waveversion.txt').trim()
                     withCredentials([string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')]) {
                     bat """
                         docker login -u nashkenra -p '$DOCKER_PASSWORD'
-                        docker build -f Dockerfile.wave -t ${imageName} .
+                        docker build -f docker/Dockerfile.wave -t ${imageName} .
                         docker tag ${imageName} nashkenra/kenrasoft:${imageTag}
                         docker push nashkenra/kenrasoft:${imageTag}
                     """

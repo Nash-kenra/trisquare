@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    checkout([$class: 'GitSCM', branches: [[name: 'avi-dockerjenkins']], userRemoteConfigs: [[url: 'https://github.com/kenrasoftorg/trisquare.git', credentialsId: 'git-ssh']]])
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/kenrasoftorg/trisquare.git', credentialsId: 'git-ssh']]])
                 }
             }
         }
@@ -24,18 +24,13 @@ pipeline {
         stage('Build Pulse Image') {
             steps {
                 script {
-                    // Define the credentials ID
-                    def credentialsId = 'docker-hub-password'
-                    // Retrieve the secret text (password) using the credentials ID
-                    def password = credentials(credentialsId)
-                    // Use withCredentials to securely log in and build the Docker image
-                    git branch: 'avi-dockerjenkins', url: 'https://github.com/kenrasoftorg/trisquare.git'
+                    git branch: 'main', url: 'https://github.com/kenrasoftorg/trisquare.git'
                     def imageName = "pangea"
                     def imageTag = readFile('pangeaversion.txt').trim()
                     withCredentials([string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')]) {
                     bat """
                         docker login -u nashkenra -p '$DOCKER_PASSWORD'
-                        docker build -f Dockerfile.pangea -t ${imageName} .
+                        docker build -f docker/Dockerfile.pangea -t ${imageName} .
                         docker tag ${imageName} nashkenra/kenrasoft:${imageTag}
                         docker push nashkenra/kenrasoft:${imageTag}
                     """
