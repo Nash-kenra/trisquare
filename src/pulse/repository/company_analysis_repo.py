@@ -6,11 +6,10 @@ from pulse.repository.pulsedb_base import PulseDB_Base
 Base = declarative_base()
 
 
-class Comp_Estimates_table(Base, PulseDB_Base):
-# Entity class for the DB table Global companies. 
+class Comp_estimates_table(Base, PulseDB_Base):
+# Entity class for the DB table comp_estimates. 
 
 # Manage all the operations like loading the data from the comp_estimates table.
-
 
     __tablename__ = 'comp_estimates'
     symbol = Column(String, primary_key=True)
@@ -36,14 +35,12 @@ class Comp_Estimates_table(Base, PulseDB_Base):
     numberanalystestimatedrevenue = Column(INTEGER)
     numberanalystsestimatedeps = Column(INTEGER)
 
-    
-
 
     def getBase(self):
         return Base
 
     def convert(self, element):
-        row = Comp_Estimates_table(
+        row = Comp_estimates_table(
             symbol=element["symbol"],
             date_time=element["date"],
 	        estimatedrevenuelow=element["estimatedRevenueLow"],
@@ -117,7 +114,7 @@ class Comp_ratings_table(Base, PulseDB_Base):
         )
         return row
 
-class comp_recom_table(Base, PulseDB_Base):
+class Comp_recom_table(Base, PulseDB_Base):
     # Entity class for the DB table comp_recom.       
     __tablename__='comp_recom' 
     symbol = Column(String, primary_key=True)
@@ -132,7 +129,7 @@ class comp_recom_table(Base, PulseDB_Base):
         return Base
     # Mapping response elements to table colums.
     def convert(self, element):
-        row = comp_recom_table(
+        row = Comp_recom_table(
                 symbol=element["symbol"],
                 date_time=element["date"],
                 analyst_ratings_buy=element["analystRatingsbuy"],

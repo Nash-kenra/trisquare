@@ -3,24 +3,24 @@ from pulse.fmpapi.index_companies_api import SP500
 from pulse.fmpapi.index_companies_api import Nasdaq
 from pulse.fmpapi.index_companies_api import Dowjones
 from pulse.fmpapi.stock_prices_api import Global_stocks
-from pulse.fmpapi.company_analysis_api import Comp_Estimates
-from pulse.fmpapi.company_analysis_api import Comp_Ratings
+from pulse.fmpapi.company_analysis_api import Comp_estimates
+from pulse.fmpapi.company_analysis_api import Comp_ratings
 
 from pulse.fmpapi.stock_prices_api import Historical_prices
 from pulse.fmpapi.stock_prices_api import Historical_market_cap
 from pulse.fmpapi.stock_prices_api import Daily_prices
-from pulse.fmpapi.company_analysis_api import comp_recom
+from pulse.fmpapi.company_analysis_api import Comp_recom
 
 
 from pulse.repository.index_companies_repo import SP500_table
-from pulse.repository.index_companies_repo import NASDAQ_table
-from pulse.repository.index_companies_repo import DOWJONES_table
+from pulse.repository.index_companies_repo import Nasdaq_table
+from pulse.repository.index_companies_repo import Dowjones_table
 from pulse.repository.stock_prices_repo import Global_stocks_table
 from pulse.repository.stock_prices_repo import Historical_prices_table
 from pulse.repository.stock_prices_repo import Daily_prices_table
-from pulse.repository.company_analysis_repo import Comp_Estimates_table
+from pulse.repository.company_analysis_repo import Comp_estimates_table
 from pulse.repository.company_analysis_repo import Comp_ratings_table
-from pulse.repository.company_analysis_repo import comp_recom_table
+from pulse.repository.company_analysis_repo import Comp_recom_table
 
 from pulse.repository.queries import Queries
 from concurrent.futures import ThreadPoolExecutor
@@ -52,7 +52,7 @@ class FmpApiToDatabase():
         nasdaq_json_data = nasdaq_api.fetch()
         print("Fetched Nasdaq json data from API")
 
-        nasdaq_repo = NASDAQ_table()
+        nasdaq_repo = Nasdaq_table()
         # The below line which is commented is used to create table based on class
         # nasdaq_repo.create_table(nasdaq_repo.getBase())
         nasdaq_repo.load_data(nasdaq_json_data)
@@ -63,7 +63,7 @@ class FmpApiToDatabase():
         dowjones_json_data = dowjones_api.fetch()
         print("Fetched Dowjones json data from API")
 
-        dowjones_repo = DOWJONES_table()
+        dowjones_repo = Dowjones_table()
         # The below line which is commented is used to create table based on class
         # dowjones_repo.create_table(dowjones_repo.getBase())
         dowjones_repo.load_data(dowjones_json_data)
@@ -176,28 +176,28 @@ class FmpApiToDatabase():
             print(f"loaded stock prices API data into stock price table for symbol: {symbol}")
 
     def load_comp_estimates():
-        # We are here getting daily prices of SP500 stocks. So fetching the symbols 
+        # We are here getting company estimates of SP500 stocks. So fetching the symbols 
         # of SP500
         symbols = Queries()
         for symbol in symbols.get_symbols():
-            comp_estimates_api = Comp_Estimates(symbol)
+            comp_estimates_api = Comp_estimates(symbol)
             comp_estimates_json_data = comp_estimates_api.fetch()
 
             print(f"Fetched analyst estimates json data from API for symbol: {symbol}")
 
-            analyst_estimates_repo = Comp_Estimates_table()
+            analyst_estimates_repo = Comp_estimates_table()
             analyst_estimates_repo.load_data(comp_estimates_json_data)
 
             print(f"loaded analyst estimates API data into comp_estimates table for symbol: {symbol}")
             
 
     def load_comp_ratings():
-            # We are here getting daily prices of SP500 stocks. So fetching the symbols 
+            # We are here getting company ratings of SP500 stocks. So fetching the symbols 
             # of SP500
         symbols = Queries()
         for symbol in symbols.get_symbols():
             
-            Comp_ratings_api = Comp_Ratings(symbol)
+            Comp_ratings_api = Comp_ratings(symbol)
             Comp_ratings_json_data = Comp_ratings_api.fetch()
 
             print(f"Fetched analyst estimates json data from API for symbol: {symbol}")
@@ -213,13 +213,13 @@ class FmpApiToDatabase():
         # Fetching the symbols of SP500
         symbols=Queries()
         for symbol in symbols.get_symbols():
-            comp_recom_api = comp_recom(symbol)
+            comp_recom_api = Comp_recom(symbol)
             # Calling FMP API to Get analyst company recommendations for each symbol. 
             comp_recom_json_data = comp_recom_api.fetch()
 
             print(f"Fetched company recommendation json data from API for symbol: {symbol}")
 
-            comp_recom_repo = comp_recom_table()
+            comp_recom_repo = Comp_recom_table()
             # loading company recommendations for each symbol
             comp_recom_repo.load_data(comp_recom_json_data)
 
