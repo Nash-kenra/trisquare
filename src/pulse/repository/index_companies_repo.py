@@ -36,7 +36,7 @@ class SP500_table(Base, PulseDB_Base):
         return row
 
 
-class NASDAQ_table(Base,PulseDB_Base):
+class Nasdaq_table(Base,PulseDB_Base):
 # Entity class for the DB table NASDAQ companies. 
 # Manage all the operations like loading the data from the NASDAQ table.
 
@@ -53,7 +53,7 @@ class NASDAQ_table(Base,PulseDB_Base):
         return Base
     
     def convert(self, element):
-        row = NASDAQ_table(
+        row = Nasdaq_table(
             symbol=element["symbol"],
             company_name=element["name"],
             sector=element["sector"],
@@ -64,7 +64,7 @@ class NASDAQ_table(Base,PulseDB_Base):
         )
         return row
 
-class DOWJONES_table(Base, PulseDB_Base):
+class Dowjones_table(Base, PulseDB_Base):
 # Entity class for the DB table DOWJONES companies. 
 # Manage all the operations like loading the data from the DOWJONES table.
 
@@ -82,7 +82,7 @@ class DOWJONES_table(Base, PulseDB_Base):
         return Base
 
     def convert(self, element):
-        row = DOWJONES_table(
+        row = Dowjones_table(
             symbol=element["symbol"],
             company_name=element["name"],
             sector=element["sector"],
