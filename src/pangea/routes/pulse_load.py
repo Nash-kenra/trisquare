@@ -1,47 +1,52 @@
 from flask import Blueprint, jsonify, request
 from pulse.integration.fmpapi_to_db import FmpApiToDatabase
 
+pulse_load = Blueprint('pulse_load',__name__)
 
-pulse_load = Blueprint("pulse_load", __name__)
-
-# @pulse_load.route('/load_index_companies', methods=['GET'])
-# def get_index_companies():
-#     FmpApiToDatabase.load_index_companies()
-#     message = "loaded index companies successfully"
-#     return message
+query_string_to_function_mapping = {
+        "indexCompanies":{
+            "api_name":FmpApiToDatabase.load_index_companies,
+            "message": "Loaded index companies data successfully"
+        }, 
+        "globalStocks":{
+            "api_name":FmpApiToDatabase.load_global_stocks,
+            "message": "Loaded global stocks data successfully"
+        }, 
+        "historicalPrices":{
+            "api_name":FmpApiToDatabase.load_historical_prices,
+            "message": "Loaded historical prices data successfully"
+        }, 
+        "dailyPrices":{
+            "api_name":FmpApiToDatabase.load_daily_prices,
+            "message": "Loaded daily prices data successfully"
+        }, 
+        "compEstimates":{
+            "api_name":FmpApiToDatabase.load_comp_estimates,
+            "message": "Loaded company estimates data successfully"
+        }, 
+        "compRatings":{
+            "api_name":FmpApiToDatabase.load_comp_ratings,
+            "message": "Loaded company ratings data successfully"
+        }, 
+        "compRecom":{
+            "api_name":FmpApiToDatabase.load_comp_recom,
+            "message": "Loaded company recommendations data successfully"
+        } 
+    }   
 
 @pulse_load.route('/pulse/load', methods=['GET'])
 def get_load_pulse_data():
-    selected_data = request.args.get('data')  
+    # Reading query parameter 'data' from request
+    selected_data= request.args.get('data')    
+    function_mapping = query_string_to_function_mapping.get(selected_data)
     try:
-        if selected_data=="indexCompanies":
-            FmpApiToDatabase.load_index_companies() 
-            message = "loaded index companies successfully"
-        elif selected_data=="globalStocks":
-            FmpApiToDatabase.load_global_stocks()
-            message = "loaded global stocks successfully"
-        elif selected_data=="historicalPrices":
-            FmpApiToDatabase.load_historical_prices()
-            message = "loaded historical prices successfully"
-        elif selected_data=="dailyPrices":
-            FmpApiToDatabase.load_daily_prices()
-            message = "loaded daily prices successfully"
-        elif selected_data=="compEstimates":
-            FmpApiToDatabase.load_comp_estimates()
-            message = "loaded company estimates successfully"
-        elif selected_data=="compRatings":
-            FmpApiToDatabase.load_comp_ratings()
-            message = "loaded comapany ratings successfully"
-        elif selected_data=="compRecom":
-            FmpApiToDatabase.load_comp_recom()
-            message = "loaded company recommendations successfully"
+        if function_mapping:
+            function_mapping.get("api_name")()
+            response = jsonify({"message": function_mapping.get("message")}),200
         else:
-            response = jsonify({"Error": "Bad Request - Inavlid data"})
-            response.status_code = 400 
-            return response
+            response=jsonify({"error": "Bad Request ---Invalid data"}),400           
     except Exception as e:
-        return jsonify({"error": "Internal Server Error", "exception": str(e)}), 500
-
-    return jsonify({"Message":message}), 200
+        response = jsonify({"error": "Internal Server Error","Exception": str(e)}),500
+    return response
 
 
