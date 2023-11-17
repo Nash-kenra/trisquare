@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Sectors.css';
+
 import SectorImage from './Sector.png';
 import { Link } from 'react-router-dom';
+import { pangea } from '../context/apiContext.js';
 
 
 function Sectors() {
@@ -10,25 +12,17 @@ function Sectors() {
   const [subsectors, setSubsectors] = useState([]);
   const [sectorMarketCap, setSectorMarketCap] = useState(null);
 
+
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/sectors')
-      .then((response) => response.json())
-      .then((data) => setSectors(data))
-      .catch((error) => console.error('Error fetching sectors:', error));
+    pangea("/sectors", setSectors);
   }, []);
 
   const fetchSubsectors = (sector) => {
-    fetch(`http://127.0.0.1:5000/sectors/subsectors?sector=${sector}`)
-      .then((response) => response.json())
-      .then((data) => setSubsectors(data))
-      .catch((error) => console.error('Error fetching subsectors:', error));
+    pangea(`/sectors/subsectors?sector=${sector}`, setSubsectors);
   };
 
   const fetchSectorMarketCap = (sector) => {
-    fetch(`http://127.0.0.1:5000/sectors/${sector}/marketcap`)
-      .then((response) => response.json())
-      .then((data) => setSectorMarketCap(data))
-      .catch((error) => console.error('Error fetching sector market cap:', error));
+    pangea(`/sectors/${sector}/marketcap`, setSectorMarketCap);
   };
 
   const handleSectorClick = (sector) => {

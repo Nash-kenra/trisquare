@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as echarts from 'echarts';
 import './CompareMarketCap.css'; 
 import { Link } from 'react-router-dom';
+import { pangea } from '../context/apiContext.js';
 
 const CompareMarketCap = () => {
   // State to store the fetched data
@@ -15,21 +16,13 @@ const CompareMarketCap = () => {
 
   // Function to fetch data from the API
   const fetchData = () => {
-    // Define the API URL
-    const apiUrl = 'http://127.0.0.1:5000/sectors/periodic_marketcap_data';
-
-    // Make the API request
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        // Update the component's state with the fetched data
-        setData(data);
-        setDataFetched(true); // Set dataFetched to true
-      })
-      .catch((error) => {
-        console.error('Error fetching data from the API:', error);
-      });
+    pangea("/sectors/periodic_marketcap_data", processData);
   };
+
+  const processData = (data) => { 
+    setData(data);
+    setDataFetched(true); // Set dataFetched to true
+  }
 
   // Fetch data from the API when the component mounts
   useEffect(() => {

@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { pangea } from '../context/apiContext.js';
 
 function SectorsMarketCap() {
   const [sectorMarketCaps, setSectorMarketCaps] = useState([]);
 
   useEffect(() => {
-    // Fetch data from your API endpoint
-    fetch('http://127.0.0.1:5000/sectors/marketcap')
-      .then((response) => response.json())
-      .then((data) => {
-        // Transform the API response into an array of objects with formatted market caps
-        const transformedData = Object.entries(data).map(([sector, marketcap]) => ({
-          sector,
-          marketcap,
-          formattedMarketCap: formatMarketCap(marketcap),
-        }));
-        setSectorMarketCaps(transformedData);
-      })
-      .catch((error) => console.error('Error fetching sector market caps:', error));
+    pangea("/sectors/marketcap", transformData);
   }, []);
+
+  const transformData = (data) => {
+    // Transform the API response into an array of objects with formatted market caps
+    const transformedData = Object.entries(data).map(([sector, marketcap]) => ({
+      sector,
+      marketcap,
+      formattedMarketCap: formatMarketCap(marketcap),
+    }));
+    setSectorMarketCaps(transformedData);
+  }
 
   // Function to format market cap values
   const formatMarketCap = (marketcap) => {

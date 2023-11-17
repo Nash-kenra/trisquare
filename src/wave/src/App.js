@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Home from './components/Home';
-import Sectors from './components/Sectors';
-import SectorsMarketCap from './components/SectorsMarketCap';
+import Home from './pages/Home';
+import Sectors from './pages/Sectors';
+import SectorsMarketCap from './pages/SectorsMarketCap';
 import HistoricalData from './components/HistoricalData';
-import CompareMarketCap from './components/CompareMarketCap';
+import CompareMarketCap from './pages/CompareMarketCap';
 
 function App() {
   return (
