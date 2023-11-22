@@ -21,7 +21,7 @@ class GetApi:
     # These are all class level variables to control the number of calls. Typically GetApi is instantiated for each API call
     # But we need to have a counter on number of calls made to API. So you need class variables to take care of this situation
     # We will be counting the number of calls across the app, and if it exceeds the limit, we will be sleeping for the rest of the time
-    # and resume it, so we will not be missing tje calls.  
+    # and resume it, so we will not be missing the calls.  
     #     
     TOTAL_CALLS_PER_MINUTE = 280
     MINUTE = 60
