@@ -1,4 +1,10 @@
-import { apiRepo } from './apiConfig.js';
+import { apiRepo } from './apiConfig';
+import Localbase from 'localbase'
+
+// Localbase framework:  https://github.com/dannyconnell/localbase 
+
+const db = new Localbase('pangea');
+db.config.debug = false; 
 
 export const pangea = (action, process) => {
   
@@ -15,7 +21,7 @@ export const pangea = (action, process) => {
 
     function getRemoteData() { 
         const referece = basePath + action;
-        
+        console.log("fetch the data from " + referece);
         fetch(referece)
             .then((response) => response.json())
             .then((data) => process(data))
@@ -23,7 +29,11 @@ export const pangea = (action, process) => {
     }
     
     function getEdgeData() { 
-        return "";
+
+        const data = db.collection(action).get().then(data => {
+            process(data);
+        });
+        
     }
 
 };
